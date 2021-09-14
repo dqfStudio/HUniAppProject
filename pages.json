@@ -90,6 +90,7 @@
 			}
 		],
 		"midButton": {
+			"height": "60",
 			"text": "中间",
 			"iconPath": "static/icon-tabbar-home2.png"
 		}
