@@ -1,0 +1,111 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/homePage1",
+			"style": {
+				"navigationBarTitleText": "第一页"
+			}
+		},
+		{
+			"path": "pages/index/homePage2",
+			"style": {
+				"navigationBarTitleText": "第二页"
+			}
+		},		
+		{
+			"path": "pages/index/homePage3",
+			"style": {
+				"navigationBarTitleText": "第三页"
+			}
+		},		
+		{
+			"path": "pages/index/homePage4",
+			"style": {
+				"navigationBarTitleText": "中间"
+			}
+		},		
+		{
+			"path": "pages/index/homePage5",
+			"style": {
+				"navigationBarTitleText": "第四页"
+			}
+		},				
+		{
+			"path": "pages/index/homePage6",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},		
+		{
+			"path": "pages/index/homePage7",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#999999",
+		"selectedColor": "#ff7f00",
+		"fontSize": "11px",
+		"borderStyle": "white",
+		// "backgroundColor": "#FFFFFF",
+		"backgroundColor": "#F8F8F8",
+		"iconWidth": "24px",
+		"spacing": "1px",
+		"list": [{
+				"pagePath": "pages/index/homePage1",
+				"iconPath": "static/icon-tabbar-home1.png",
+				"selectedIconPath": "static/icon-tabbar-home2.png",
+				"text": "第一页"
+			},
+			{
+				"pagePath": "pages/index/homePage2",
+				"iconPath": "static/icon-tabbar-home1.png",
+				"selectedIconPath": "static/icon-tabbar-home2.png",
+				"text": "第二页"
+			},
+			{
+				"pagePath": "pages/index/homePage3",
+				"iconPath": "static/icon-tabbar-home1.png",
+				"selectedIconPath": "static/icon-tabbar-home2.png",
+				"text": "第三页"
+			},
+			{
+				"pagePath": "pages/index/homePage5",
+				"iconPath": "static/icon-tabbar-home1.png",
+				"selectedIconPath": "static/icon-tabbar-home2.png",
+				"text": "第四页"
+			},
+			{
+				"pagePath": "pages/index/homePage6",
+				"iconPath": "static/icon-tabbar-home1.png",
+				"selectedIconPath": "static/icon-tabbar-home2.png",
+				"text": "登录"
+			},
+			{
+				"pagePath": "pages/index/homePage7",
+				"iconPath": "static/icon-tabbar-home1.png",
+				"selectedIconPath": "static/icon-tabbar-home2.png",
+				"text": "注册"
+			}
+		],
+		"midButton": {
+			"text": "中间",
+			"iconPath": "static/icon-tabbar-home2.png"
+		}
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		// "navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [{
+			"name": "", //模式名称
+			"path": "", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
+	}
+}
