@@ -2928,6 +2928,7 @@ var render = function() {
         "v-uni-scroll-view",
         {
           staticClass: _vm._$g(1, "sc"),
+          style: _vm._$g(1, "s"),
           attrs: {
             scroll: false,
             "scroll-y": true,
@@ -2947,6 +2948,7 @@ var render = function() {
                   ref: _vm._$g("3-" + $30, "ref"),
                   refInFor: true,
                   staticClass: _vm._$g("3-" + $30, "sc"),
+                  style: _vm._$g("3-" + $30, "s"),
                   attrs: {
                     id: _vm._$g("3-" + $30, "a-id"),
                     "data-id": _vm._$g("3-" + $30, "a-data-id"),
@@ -3120,7 +3122,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../../../Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/runtime/api.js */ 16);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.tabs {\n        -webkit-box-flex: 1;\n        -webkit-flex: 1;\n                flex: 1;\n\t\tdisplay: -webkit-box;\n\t\tdisplay: -webkit-flex;\n\t\tdisplay: flex;\n        -webkit-box-orient: horizontal;\n        -webkit-box-direction: normal;\n        -webkit-flex-direction: row;\n                flex-direction: row;\n        overflow: hidden;\n        background-color: #ffffff;\n}\n.tab-bar {\n        /* width: 750rpx;\n        height: 84rpx; */\n\t\twidth: 75px;\n\t\t/* height: 800px; */\n\t\theight: winHeight+'px';\n        -webkit-box-orient: horizontal;\n        -webkit-box-direction: normal;\n        -webkit-flex-direction: row;\n                flex-direction: row;\n}\n.tab-bar ::-webkit-scrollbar {\n        display: none;\n        width: 0 !important;\n        height: 0 !important;\n        -webkit-appearance: none;\n        background: transparent;\n}\n.scroll-view-underline {\n\t\theight: 1px;\n        width: 75px;\n}\n.scroll-view-animation {\n        -webkit-transition-duration: 0.2s;\n                transition-duration: 0.2s;\n        -webkit-transition-property: left;\n        transition-property: left;\n}\n.tab-bar-line {\n        height: 1rpx;\n        background-color: #cccccc;\n}\n.tab-view {\n        -webkit-box-flex: 1;\n        -webkit-flex: 1;\n                flex: 1;\n\t\twidth: 75px;\n\t\theight: winHeight+'px';\n}\n.uni-tab-item-title {\n        color: #555;\n        font-size: 30rpx;\n        height: 45px;\n        line-height: 45px;\n\t\twidth: 75px;\n        -webkit-flex-wrap: nowrap;\n                flex-wrap: nowrap;\n\n\n\n\t\tdisplay: -webkit-box;\n\t\tdisplay: -webkit-flex;\n\t\tdisplay: flex;\n\t\t-webkit-box-pack: center;\n\t\t-webkit-justify-content: center;\n\t\t        justify-content: center;\n}\n.uni-tab-item-title-active {\n        color: #007AFF;\n}\n\t\n", ""]);
+exports.push([module.i, "\n.tabs {\n        -webkit-box-flex: 1;\n        -webkit-flex: 1;\n                flex: 1;\n\t\tdisplay: -webkit-box;\n\t\tdisplay: -webkit-flex;\n\t\tdisplay: flex;\n        -webkit-box-orient: horizontal;\n        -webkit-box-direction: normal;\n        -webkit-flex-direction: row;\n                flex-direction: row;\n        overflow: hidden;\n        background-color: #ffffff;\n}\n.tab-bar {\n        /* width: 750rpx;\n        height: 84rpx; */\n\t\twidth: 75px;\n\t\tbackground-color: gray;\n        -webkit-box-orient: horizontal;\n        -webkit-box-direction: normal;\n        -webkit-flex-direction: row;\n                flex-direction: row;\n}\n.tab-bar ::-webkit-scrollbar {\n        display: none;\n        width: 0 !important;\n        height: 0 !important;\n        -webkit-appearance: none;\n        background: transparent;\n}\n.scroll-view-underline {\n\t\theight: 1px;\n        width: 75px;\n}\n.scroll-view-animation {\n        -webkit-transition-duration: 0.2s;\n                transition-duration: 0.2s;\n        -webkit-transition-property: left;\n        transition-property: left;\n}\n.tab-bar-line {\n        height: 1rpx;\n        background-color: #cccccc;\n}\n.tab-view {\n        -webkit-box-flex: 1;\n        -webkit-flex: 1;\n                flex: 1;\n\t\twidth: 75px;\n\t\theight: winHeight+'px';\n}\n.uni-tab-item-title {\n        color: #555;\n        font-size: 30rpx;\n        height: 45px;\n        line-height: 45px;\n\t\twidth: 75px;\n        -webkit-flex-wrap: nowrap;\n                flex-wrap: nowrap;\n\n\n\n\t\tdisplay: -webkit-box;\n\t\tdisplay: -webkit-flex;\n\t\tdisplay: flex;\n\t\t-webkit-box-pack: center;\n\t\t-webkit-justify-content: center;\n\t\t        justify-content: center;\n}\n.uni-tab-item-title-active {\n        color: #007AFF;\n}\n\t\n", ""]);
 // Exports
 module.exports = exports;
 

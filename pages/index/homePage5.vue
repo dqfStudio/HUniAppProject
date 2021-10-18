@@ -1,11 +1,11 @@
 <template>
 	<view class="tabs">
-		<scroll-view class="tab-bar" :scroll="false" :scroll-y="true" :show-scrollbar="false">
+		<scroll-view class="tab-bar" :style="{'height': winHeight+'px'}" :scroll="false" :scroll-y="true" :show-scrollbar="false">
 			<view style="flex-direction: column;">
-				<view class="uni-tab-item" v-for="(tab,index) in tabList" :key="tab.id" :id="tab.id" :ref="'tabitem'+index"
+				<view class="uni-tab-item" :style="{'background-color': tabIndex==index ? '#FFFFFF' : ''}" v-for="(tab,index) in tabList" :key="tab.id" :id="tab.id" :ref="'tabitem'+index"
 					:data-id="index" :data-current="index" @click="ontabtap">
 					<text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
-					<view class="scroll-view-underline" :class="'scroll-view-animation'" :style="{'background-color': tabIndex==index ?  '#007AFF' : '#555'}"></view>
+					<view class="scroll-view-underline" :class="'scroll-view-animation'" :style="{'background-color': tabIndex==index ?  '#007AFF' : ''}"></view>
 				</view>
 			</view>
 		</scroll-view>
@@ -91,8 +91,7 @@
         /* width: 750rpx;
         height: 84rpx; */
 		width: 75px;
-		/* height: 800px; */
-		height: winHeight+'px';
+		background-color: gray;
         flex-direction: row;
         /* #ifndef APP-PLUS */
         white-space: nowrap;
