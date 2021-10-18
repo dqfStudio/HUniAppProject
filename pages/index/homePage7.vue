@@ -87,6 +87,7 @@
 		data: function() {
 			return {
 				winHeight: 0,
+				tabBarHeight: 82,
 				tabIndex: 0,
 				tabList: [{'id': '1','name': '快速注册'}, {'id': '2','name': '手机注册'}],
 			};
@@ -100,7 +101,7 @@
 		onReady() {
 			uni.getSystemInfo({
 				success:  (res) => {
-					this.winHeight = res.windowHeight-res.statusBarHeight-20;
+					this.winHeight = res.windowHeight-res.statusBarHeight-this.tabBarHeight;
 				}
 			});
 		},
