@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="287px" height="313px" viewBox="0 0 287 313" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 2备份</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="287" height="314"></rect>
+        <linearGradient x1="0%" y1="50%" x2="61.1240987%" y2="50%" id="linearGradient-3">
+            <stop stop-color="#F4701C" offset="0%"></stop>
+            <stop stop-color="#FE9303" offset="100%"></stop>
+        </linearGradient>
+        <path d="M62,0.526991184 C72.7657635,0.526991184 83.3459949,3.33028381 92.6993647,8.66096285 C194.789858,66.8444484 251.134268,99.7350757 261.732595,107.332845 C278.972987,120.812675 287.001484,134.193714 287.001484,161.745649 C284.295278,184.844392 272.782435,201.68263 252.462957,212.260363 L92.9968226,304.315597 C63.3416669,321.434669 25.423663,311.272166 8.30459061,281.61701 C2.86413381,272.192574 -4.58454889e-14,261.502216 -2.84217094e-14,250.620187 L-0.000100187654,170.912457 C5.59775818,172.151138 11.8730913,172.977581 18.8258993,173.391785 C36.4476727,174.441579 52.5510178,174.039166 62.5938395,173.691325 C69.6909269,202.03507 94.9885711,223 125.108079,223 C160.730446,223 213.608079,193.674651 213.608079,157.5 C213.608079,121.325349 160.730446,92 125.108079,92 C93.5561482,92 67.2956233,115.006447 61.7091277,145.400577 C58.4712416,146.269223 48.2111246,150.135697 30.9287768,157 C18.6010854,158.180155 8.29150774,157.705195 4.39426156e-05,155.575122 L-2.84217094e-14,62.5269912 C1.21746695e-08,28.2853367 27.7583455,0.526991184 62,0.526991184 Z" id="path-4"></path>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="浏览器图标" transform="translate(-113.000000, -99.000000)">
+            <g id="编组" transform="translate(113.000000, 99.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="蒙版" fill="#D8D8D8" opacity="0" xlink:href="#path-1"></use>
+                <g mask="url(#mask-2)">
+                    <g transform="translate(0.391921, 0.000000)">
+                        <g id="形状结合" stroke-width="1" fill-rule="evenodd">
+                            <mask id="mask-5" fill="white">
+                                <use xlink:href="#path-4"></use>
+                            </mask>
+                            <use fill="url(#linearGradient-3)" xlink:href="#path-4"></use>
+                        </g>
+                        <text id="乐" font-family="STYuanti-SC-Bold, Yuanti SC" font-size="85" font-weight="bold">
+                            <tspan x="91.1080794" y="182" fill="#FF6800">乐</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

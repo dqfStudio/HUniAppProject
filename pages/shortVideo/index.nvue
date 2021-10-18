@@ -1,0 +1,1154 @@
+<template>
+	<view class="simple-douyin">
+		<!-- 顶部标题 -->
+		<!-- <view class="wrapper">
+			<uni-status-bar></uni-status-bar>
+			<view class="nav">
+				<view class="nav-item" v-for="(tab,index) in tabList" :key="index" :data-current="index" @click="onClickTab">
+					<text class="nav-item-title" :style="{opacity: tabIndex===index ? 1 : 0.6}">{{tab.name}}</text>
+					<view class="nav-item-underline" v-if="tabIndex===index"></view>
+				</view>
+			</view>
+		</view> -->
+		<swiper class="tab-view" :current="tabIndex" :duration="300" @change="onChangeTabPage">
+			<swiper-item class="tab-view-item" v-for="(tab, index) in tabList" :key="'tab-'+index">
+				<list :ref="`list${tab.id}`" class="simple-douyin-list" @loadmore="loadMore" :loadmoreoffset="loadMoreHeight" :show-scrollbar="false" :pagingEnabled="true">
+					<refresh class="refresh" @refresh="onRefresh(tab.id)" :display="tab.refreshing ? 'show' : 'hide'">
+						<uni-load-more status="loading" />
+					</refresh>
+					
+					<cell v-if="tab.isLoading && tab.data.length === 0 && tab.requestStatus==='success'">
+						<view :style="{marginTop: ((windowHeight-400)/2) + 'px'}">
+							<empty-view></empty-view>
+						</view>
+					</cell>
+					<cell v-if="!tab.isLoading">
+						<view :style="{marginTop: ((windowHeight-400)/2) + 'px'}">
+							<loading-view></loading-view>
+						</view>
+					</cell>
+					<cell v-if="tab.requestStatus==='fail' && tab.data.length === 0" style="position:relative;" :style="boxStyle">
+						<view :style="{marginTop: ((windowHeight-400)/2) + 'px'}">
+							<nonetwork-view v-if="!tab.refreshing" @reload="nonetworkReload"></nonetwork-view>
+							<view v-else style="position:absolute;left:0;top:0;width:750rpx;height:440rpx;">
+								<loading-view></loading-view>
+							</view>
+						</view>
+					</cell>
+				 
+					<cell v-if="tab.data && tab.data.length > 0" v-for="(item, i) in tab.data" :key="'video-'+i" :style="boxStyle">
+						<template v-if="item.isAdvert">
+							<view :style="boxStyle" @click="openAdvertURL(item.url, item.id)">
+								<image :style="boxStyle" :src="item.image" mode="aspectFill"></image>
+								<view class="video-hover" :style="boxStyle">
+									<view class="play-box" @appear="handleAppear(index, i, item)"></view>
+								</view>
+							</view>
+						</template>
+						<template v-else>
+							<simple-video :ref="'videoBox'+item.id" class="videoBox" v-if="isVideo&&item.url&&item.url===currentPlayUrl&&Math.abs((index === 1 ? currentTab1Video : currentTab0Video) - i) <= 1" :ref-id="item.id" :state="item.state" :src="item.url" :boxStyle="boxStyle" @timeupdate="handleTimeupdate" @ended="handleEnded" @error="handleError" @waiting="handleWaiting" :duration="currentPlayVideoTimeLength" :setSeekTime="setSeekTime">
+								<cover-view :style="boxStyle">
+									<image v-if="!item.isPlaying||(item.isPlaying&&videoPlayTime<=0)" :style="boxStyle" :src="item.image" mode="aspectFit"></image>
+								</cover-view>
+							</simple-video>
+							<image v-if="!item.isPlaying" :style="boxStyle" :src="item.image" mode="aspectFit"></image>
+							
+							<view v-if="currentPlayUrl!=''" class="video-hover" @click="tapVideoHover(item.state, $event)" :style="boxStyle">
+								<view class="play-box" @appear="handleAppear(index, i, item)">
+									<image v-if="item.state=='pause'||item.state=='stop'" class="play-state" src="/static/icon-play-2.png" mode="widthFix"></image>
+									<image v-else-if="!item.isPlaying||(item.isPlaying&&videoPlayTime<=0)||isVideoLoading" class="play-state" src="/static/loading.gif" mode="widthFix"></image>
+								</view>
+							</view>
+
+							<!-- 右侧菜单 -->
+							<view class="item-right" :style="{bottom: ((safeAreaHeight||20)+30)+'px'}">
+								<view class="item-right-menu" @tap.stop="item.praise_status===1 ? optCancelLike(item.id, index, i) : optLike(item.id, index, i)">
+									<!-- <image class="item-right-icon" style="width:87rpx;height:78rpx;" :src="item.praise_status===1 ? '/static/icon-like-2.png' : '/static/icon-like-1.png'" mode="widthFix"></image> -->
+									<view style="width:87rpx;height:78rpx;position:relative;">
+										<image class="item-right-icon" style="width:87rpx;height:78rpx;position:absolute;" src="/static/icon-like-1.png" mode="widthFix"></image>
+										<uni-transition :mode-class="['zoom-in','fade']" style="position:absolute;z-index:1;" :show="item.praise_status===1">
+											<image class="item-right-icon" style="width:87rpx;height:78rpx;" src="/static/icon-like-2.png" mode="widthFix"></image>
+										</uni-transition>
+									</view>
+									<text class="item-right-text">{{numberCount(item.praise)}}</text>
+								</view>
+								<!-- <view class="item-right-menu">
+									<image class="item-right-icon" src="../../static/icon-comment.png" mode="widthFix"></image>
+									<text class="item-right-text">{{numberCount(item.video_comment_count)}}</text>
+								</view>
+								<view class="item-right-menu">
+									<image class="item-right-icon" src="../../static/icon-share.png" mode="widthFix"></image>
+									<text class="item-right-text">6686</text>
+								</view> -->
+							</view>
+							<!-- 底部信息 -->
+							<view class="item-bottom" :style="{bottom: ((safeAreaHeight||20)+30)+'px'}">
+								<!-- 权限-需要会员或者购买 -->
+								<view style="flex-direction: row;" v-if="item.try_status===1&&item.is_charge!==2&&userInfo.is_vip===2" @tap.stop="toPayVip">
+									<text class="item-pay-vip">开通VIP 观看完整版</text>
+								</view>
+								<view style="flex-direction: row;" v-if="item.try_status===1&&item.is_charge===2" @tap.stop="toPayTip(item)">
+									<text class="item-pay-vip">支付{{(item.charge/100).toFixed(2)}}金币 观看完整版</text>
+								</view>
+								<!-- 名称 -->
+								<text class="item-name">{{item.name}}</text>
+								<!-- 标签 -->
+								<view style="flex-direction: row;" v-if="item.lables.length>0">
+									<text v-for="(lable, index) in item.lables" :key="index" class="item-label">{{lable.name}}</text>
+								</view>
+							</view>
+						</template>
+					</cell>
+				</list>
+			</swiper-item>
+		</swiper>
+		<!-- 进度条 -->
+		<view v-if="isShowProgress" class="progress-box" :style="{bottom: (safeAreaHeight||20)+'px'}">
+			<!-- 显示的进度条 -->
+			<progress :percent="percent" activeColor="#FF7F00" backgroundColor="rgba(237,237,237,.4)" stroke-width="1" />
+			<!-- 拖动时显示时间 -->
+			<view class="progress-time" v-if="progressText">
+				<text class="progress-time-text">{{progressText}}</text>
+			</view>
+			<!-- 拖动层 -->
+			<slider v-if="currentPlayVideoTimeLength>0" :value="percent" activeColor="rgba(0,0,0,0)" backgroundColor="rgba(0,0,0,0)" block-color="rgba(0,0,0,0)" @change="sliderChange" @changing="sliderChanging" class="progress-slider" />
+		</view>
+		
+		<view class="back-btn" :style="{top: statusBarHeight + 'px'}" @click="backPage">
+			<!-- <uni-icons color="#FFFFFF" type="back" size="24" /> -->
+			<image class="video-back-img" src="../../static/icon-back.png"></image>
+		</view>
+		
+		<!-- 购买提示 -->
+		<uni-popup ref="modalPay">
+			<!-- 普通用户-余额足够 -->
+			<modal-pay v-if="userInfo.is_vip===2&&(userInfo.money||0)>=videoMoney" :type="0" :money="videoMoney" :vipMoney="videoVipMoney" :balance="userInfo.money||0" okText="开通VIP" closeText="原价购买" @confirm="toPayVip" @close="confirmPay" :beforeClose="true"></modal-pay>
+			<!-- 普通用户-余额不足 -->
+			<modal-pay v-if="userInfo.is_vip===2&&(userInfo.money||0)<videoMoney" :type="1" :money="videoMoney" :vipMoney="videoVipMoney" :balance="userInfo.money||0" okText="立即充值" @confirm="toPayVip(1)"></modal-pay>
+			
+			<!-- vip用户-余额足够 -->
+			<modal-pay v-if="userInfo.is_vip===1&&(userInfo.money||0)>=videoVipMoney" :type="2" :isVip="true" :money="videoMoney" :vipMoney="videoVipMoney" :balance="userInfo.money||0" @confirm="confirmPay"></modal-pay>
+			<!-- vip用户-余额不足 -->
+			<modal-pay v-if="userInfo.is_vip===1&&(userInfo.money||0)<videoVipMoney" :type="3" :isVip="true" :money="videoMoney" :vipMoney="videoVipMoney" :balance="userInfo.money||0" okText="立即充值" @confirm="toPayVip(1)"></modal-pay>
+		</uni-popup>
+		
+		<!-- 开通vip提示 -->
+		<uni-popup ref="modalKtvip">
+			<modal-ktvip @confirm="toPayVip" :type="3"></modal-ktvip>
+		</uni-popup>
+	</view>
+</template>
+<script>
+	const deviceInfo = uni.getSystemInfoSync();
+	import config from '@/utils/config.js';
+	import http from '@/utils/request.js';
+	import simpleVideo from '@/components/simple-video.nvue';
+	import dialog from '@/components/uni-popup/uni-popup.vue';
+	import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue';
+	import uniStatusBar from '@/components/uni-status-bar/uni-status-bar.vue';
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
+	import modalPay from '@/components/modal/modal-pay.vue';
+	import modalKtvip from '@/components/modal/modal-ktvip.vue';
+	import emptyView from '@/components/empty-view.vue'
+	import loadingView from '@/components/loading-view.vue'
+	import nonetworkView from '@/components/nonetwork-view.vue'
+	import {mapState,mapMutations} from 'vuex';
+	export default {
+		data() {
+			return {
+				isVideo: false,
+				setSeekTime: 0, // 设置播放时间
+				videoPlayTime: 0, // 记录播放时间
+				percent: 0, // 播放进度
+				tabList: [
+					{
+						id: 2,
+						name: "免费",
+						data: [],
+						page: 1,
+						refreshing: false,
+						isLoading: false,
+						loadMoreStatus: 'more',
+						videoFilter: [], // 过滤掉的视频id数组 最新的50条
+						requestStatus: '', // 列表数据请求状态 success-成功 fail-失败
+					},
+					// {
+					// 	id: 1,
+					// 	name: "精品",
+					// 	data: [], // 数据
+					// 	page: 1, // 当前分页
+					// 	refreshing: false, // 下拉重新加载状态
+					// 	isLoading: false, // 是否加载
+					// 	loadMoreStatus: 'more' ,// 上拉加载更多状态
+					// 	videoFilter: [], // 过滤掉的视频id数组 最新的50条
+					// 	requestStatus: '', // 列表数据请求状态 success-成功 fail-失败
+					// }
+				], // 短视频数据
+				tabIndex: 0, // 当前tab页
+				currentTab0Video: 0, // 当前视频
+				currentTab1Video: 0, // 当前视频
+				loadMoreHeight: deviceInfo.windowHeight * 2, // 触发 loadmore 事件所需要的垂直偏移距离 加载到剩余2个的时候 继续加载
+				boxStyle: {
+					width: '750rpx',
+					height: deviceInfo.windowHeight + 'px'
+				},
+				windowHeight: deviceInfo.windowHeight,
+				safeAreaHeight: deviceInfo.windowHeight - deviceInfo.safeArea.bottom,
+				statusBarHeight: deviceInfo.statusBarHeight,
+				currentPlayUrl: '',
+				video_try: 0,
+				is_vip: 2,
+				videoMoney: 0, // 视频价格
+				videoVipMoney: 0, // 视频vip价格
+				currentPlayVideoTimeLength: 0, // 当前播放视频时长
+				progressText: '', // 进度条显示时间
+				currentTakeCareVideoId: 0, // 记录当前播放打点视频id 0 表示未记录
+				isShowProgress: true, // 是否显示进度条
+				isVideoLoading: false, // 是否加载中
+			};
+		},
+		components: {
+			simpleVideo,
+			dialog,
+			uniNavBar,
+			uniStatusBar,
+			uniLoadMore,
+			modalPay,
+			modalKtvip,
+			emptyView,
+			loadingView,
+			nonetworkView
+		},
+		computed: {
+			...mapState({
+				userInfo: state => state.userInfo
+			})
+		},
+		onBackPress() {
+			// return true;
+		},
+		watch: {
+			// 监听显示的改变
+			currentTab0Video(newIndex, oldIndex) {
+				this.percent = 0;
+				this.currentTakeCareVideoId = 0;
+				const tab0Data = this.tabList[0].data;
+				if (tab0Data.length > 0) {
+					tab0Data[oldIndex].state = 'stop';
+					tab0Data[oldIndex].isPlaying = false;
+					
+					const newVideoData = tab0Data[newIndex]; // 获取当前视频信息
+					this.setSeekTime = 0;
+					if (newVideoData.isAdvert) {
+						this.isShowProgress = false;
+					} else {
+						this.isShowProgress = true;
+						setTimeout(() => {
+							if (this.currentTab0Video === newIndex) {
+								this.requestPlayUrl(newVideoData, 0);
+							}
+						},300)
+					}
+				}
+			},
+			currentTab1Video(newIndex, oldIndex) {
+				this.percent = 0;
+				this.currentTakeCareVideoId = 0;
+				const tab1Data = this.tabList[1].data;
+				if (tab1Data.length > 0) {
+					tab1Data[oldIndex].state = 'stop';
+					tab1Data[oldIndex].isPlaying = false;
+					
+					const newVideoData = tab1Data[newIndex]; // 获取当前视频信息
+					this.setSeekTime = 0;
+					if (newVideoData.isAdvert) {
+						this.isShowProgress = false;
+					} else {
+						this.isShowProgress = true;
+						setTimeout(() => {
+							if (this.currentTab1Video === newIndex) {
+								this.requestPlayUrl(newVideoData, 1);
+							}
+						},300)
+					}
+				}
+			},
+			tabIndex(newIndex, oldIndex) {
+				this.currentTakeCareVideoId = 0;
+				const oldTabData = this.tabList[oldIndex].data;
+				if (oldTabData.length > 0) {
+					oldTabData[this['currentTab' + oldIndex + 'Video']].state = 'stop';
+					oldTabData[this['currentTab' + oldIndex + 'Video']].isPlaying = false;
+				}
+				
+				const newTabData = this.tabList[newIndex].data;
+				if (newTabData.length > 0) {
+					const newVideoData = newTabData[this['currentTab' + newIndex + 'Video']]; // 当前视频数据
+					
+					this.setSeekTime = 0;
+					if (newVideoData.isAdvert) {
+						this.isShowProgress = false;
+					} else {
+						this.isShowProgress = true;
+						this.requestPlayUrl(newVideoData, newIndex);
+					}
+				}
+			}
+		},
+		onLoad() {
+			// 检查是否注册账号
+			if (!this.userInfo.user_login) {
+				uni.showModal({
+					title: '未登录账号',
+					content: '使用此功能，需先登录账号',
+					confirmText: '登录/注册',
+					cancelText: '先逛逛',
+					success: (res) => {
+						if (res.confirm) {
+							uni.redirectTo({
+								url: '/pages/user/login/index'
+							});
+						} else if (res.cancel) {
+							// uni.switchTab({
+							//    url: '/pages/home/index'
+							// });
+							uni.navigateTo({
+							    url: "/pages/home/index"
+							})
+						}
+					}
+				});
+				return;
+			}
+			// 检查是否绑定手机
+			if (!this.userInfo.mobile) {
+				uni.showModal({
+					title: '温馨提示',
+					content: '绑定手机号，解锁更多功能',
+					confirmText: '去绑定',
+					cancelText: '先逛逛',
+					success: (res) => {
+						if (res.confirm) {
+							uni.redirectTo({
+								url: '/pages/user/bindPhone/bindPhone?relaunch=1'
+							});
+						} else if (res.cancel) {
+							// uni.switchTab({
+							//    url: '/pages/home/index'
+							// });
+							uni.navigateTo({
+							    url: "/pages/home/index"
+							})
+						}
+					}
+				});
+				return;
+			}
+			
+			this.isVideo = true;
+			this.tabList.forEach((tab, index) => {
+				this.requestData({
+					index,
+					page: tab.page,
+					id: tab.id,
+					videoFilter: tab.videoFilter,
+					callback: (tabData) => {
+						if (index === this.tabIndex && tabData.length > 0) {
+							this.$nextTick(() => {
+								this.requestPlayUrl(tabData[0], index);
+							});
+						}
+					}
+				})
+			})
+		},
+		onShow() {
+			// 设置 tabBar
+			config.util.setTabBar(3);
+			
+			this.isVideo = true;
+			this.percent = 0;
+			this.videoPlayTime = 0;
+			this.setSeekTime = 0;
+			this.$nextTick(()=>{
+				setTimeout(() => {
+					// 播放
+					const tab = this.tabList[this.tabIndex];
+					if (this.tabIndex === 0 && tab.data.length > 0 && !tab.data[this.currentTab0Video].isAdvert) {
+						this.requestPlayUrl(tab.data[this.currentTab0Video], this.tabIndex);
+					} else if (this.tabIndex === 1 && tab.data.length > 0 && !tab.data[this.currentTab1Video].isAdvert) {
+						this.requestPlayUrl(tab.data[this.currentTab1Video], this.tabIndex);
+					} else {
+						// this.tapVideoHover();
+					}
+				},100);
+			})
+		},
+		onHide() {
+			if (this.tabList[this.tabIndex] && this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']]) {
+				this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].isPlaying = false;
+			}
+			// 暂停当前播放
+			this.tapVideoHover('play');
+			this.isVideo = false;
+			this.percent = 0;
+			this.videoPlayTime = 0;
+			this.setSeekTime = 0;
+			
+			this.$refs.modalPay.close();
+			this.$refs.modalKtvip.close();
+		},
+		methods: {
+			backPage() {
+				uni.navigateBack();
+			},
+			// 当没有图片返回默认图片 url 资源路径
+			getImageUrl(url = '') {
+				if (url.indexOf('.html') >= 0) return config.util.ImgDefault;
+				return url || config.util.ImgDefault;
+			},
+			/**
+			 * 获取图片资源-解决异步问题
+			 * @param {Object} imgData 图片数据源对象
+			 * @param {String} key 图片数据源对应key
+			 */
+			requestImageUrl(imgData = {}, key = 'image') {
+				if (imgData && imgData[key] && imgData[key].indexOf('.html') >= 0) {
+					// 获取图片地址
+					config.util.getImage(imgData[key]).then(data => {
+						imgData[key] = data;
+					});
+				}
+			},
+			openURL(url) {
+				config.util.openURL(url);
+			},
+			openAdvertURL(url, ad_id) {
+				http.post({
+					url: config.api.clickVolume,
+					data: {
+						advert_id: ad_id
+					}
+				})
+				config.util.openURL(url)
+			},
+			// 数据加载失败
+			nonetworkReload() {
+				console.log("nonetworkReload==>")
+				const tab = this.tabList[this.tabIndex];
+				if (tab.refreshing) {
+					return;
+				}
+				tab.videoFilter = [];
+				tab.refreshing = true;
+				tab.page = 1;
+				tab.loadMoreStatus = "more";
+				// 重置 loadmore
+				if (this.$refs[`list${tab.id}`] && this.$refs[`list${tab.id}`][0]) {
+					this.$refs[`list${tab.id}`][0].resetLoadmore();
+				}
+							
+				this.requestData({
+					index: this.tabIndex,
+					page: tab.page,
+					id: tab.id,
+					videoFilter: tab.videoFilter,
+					callback: (tabData) => {
+						if (tabData.length > 0) {
+							this.$nextTick(() => {
+								this.requestPlayUrl(tabData[0], this.tabIndex);
+							});
+						}
+					}
+				})
+			},
+			sliderChange(e) {
+				const videoData = this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']];
+				const seekTime = parseInt(e.detail.value / 100 * this.currentPlayVideoTimeLength);
+				const videoCtx = this.$refs[`videoBox${videoData.id}`];
+				if (videoCtx && videoCtx.length > 0 && videoCtx[0].$refs[`video_${videoData.id}`]) {
+					videoCtx[0].$refs[`video_${videoData.id}`].seek(seekTime);
+				}
+				
+				this.progressText = '';
+				this.percent = e.detail.value;
+			},
+			sliderChanging(e) {
+				const seekTime = parseInt(e.detail.value / 100 * this.currentPlayVideoTimeLength);
+				this.progressText = `${config.util.secondToDate(seekTime, 'mm:ss')}/${config.util.secondToDate(this.currentPlayVideoTimeLength, 'mm:ss')}`;
+				this.percent = e.detail.value;
+			},
+			confirmPay() {
+				if (this.confirmPayLoading) return;
+				this.confirmPayLoading = true;
+				// 确定购买
+				const tabData = this.tabList[this.tabIndex].data;
+				http.post({
+					url: config.api.payVideo,
+					data: {
+						video_id: this.payVideoId
+					}
+				}).then((res) => {
+					this.confirmPayLoading = false;
+					uni.showToast({
+						icon: 'none',
+						title: '购买成功'
+					});
+					
+					this.isVideo = false;
+					this.percent = 0;
+					this.$nextTick(() => {
+						setTimeout(() => {
+							this.isVideo = true;
+							this.setSeekTime = this.videoPlayTime;
+							this.requestPlayUrl(tabData.find(item => item.id === this.payVideoId), this.tabIndex);
+							this.$refs.modalPay.close();
+							this.payVideoId = 0;
+						},100)
+					});
+					
+					// 获取个人信息
+					this.$store.dispatch('getUserInfo');
+				}).catch((err) => {
+					this.confirmPayLoading = false;
+					this.$refs.modalPay.close();
+				})
+			},
+			toPayTip(data) {
+				this.videoMoney = data.charge;
+				this.videoVipMoney = data.vip_charge;
+				this.payVideoId = data.id;
+				// this.$refs.modalPay.open();
+				this.$store.dispatch('getUserInfo').then(() => {
+					this.$refs.modalPay.open();
+				})
+				.catch((err) => {
+					this.$refs.modalPay.open();
+				})
+			},
+			toPayVip(id = 0) {
+				// 开通vip
+				uni.navigateTo({
+					url: "/pages/user/voucherCenter/voucherCenter?id="+id
+				})
+				this.$refs.modalPay.close();
+				this.$refs.modalKtvip.close();
+			},
+			numberCount(value) {
+				return config.util.unitToW(value);
+			},
+			/**
+			 * 监听视频上下滑动
+			 * @param {number} index 当前tab的索引
+			 * @param {number} i 当前tab下显示的视频索引
+			 * @param {Object} item 当前视频信息
+			 */
+			handleAppear(index, i, item) {
+				this['currentTab' + index + 'Video'] = i;
+			},
+			// 点击tab
+			onClickTab(e) {
+				let index = e.target.dataset.current || e.currentTarget.dataset.current;
+				this.switchTab(index);
+			},
+			// TabPage切换
+			onChangeTabPage(e) {
+				let index = e.target.current || e.detail.current;
+				this.switchTab(index);
+			},
+			/**
+			 * tab切换
+			 * @param {number} index - Key to be escaped.
+			 */
+			switchTab(index) {
+				index = parseInt(index)
+				if (this.tabIndex === index) {
+					return;
+				}
+				this.tabIndex = index;
+				this.percent = 0;
+			},
+			/**
+			 * 请求数据
+			 * @param {Object} params 
+			 */
+			requestData(params) {
+				const tab = this.tabList[params.index];
+				http.post({
+					url: config.api.getShortVideoList,
+					data: {
+						cate_id: params.id, // 分类id 1:精品 2:推荐 3:关注
+						current_page: params.page,
+						video_filter: params.videoFilter
+					}
+				}).then((res) => {
+					if (tab) {
+						tab.isLoading = true;
+						tab.refreshing = false;
+						tab.requestStatus = 'success';
+					}
+					
+					if (res.data) {
+						const data = res.data;
+						const newData = data.list;
+						// 初始化播放状态
+						newData.forEach((item, index) => {
+							item.state = 'pause';
+						});
+						
+						// 插入广告 7 16
+						if (data.advert && data.advert.length > 0) {
+							if (newData.length <= 10 && newData.length > 2 && data.advert[0]) {
+								newData.splice(newData.length/2, 0, {
+									isAdvert: true,
+									id: data.advert[0].aid,
+									image: data.advert[0].image,
+									url: data.advert[0].url,
+								});
+							} else if (newData.length > 10) {
+								data.advert.map((item, index) => {
+									const advertPosition = Math.ceil(newData.length/3);
+									newData.splice((advertPosition*(index+1))+index, 0, {
+										isAdvert: true,
+										id: item.aid,
+										image: item.image,
+										url: item.url,
+									});
+								})
+							}
+						}
+						
+						tab.data = tab.page === 1 ? newData : tab.data.concat(newData || []);
+						tab.page = tab.page + 1;
+						tab.loadMoreStatus = data.per_page > data.list.length ? "noMore" : "more"; // 是否有更多
+						this.video_try = data.video_try;
+						this.is_vip = data.is_vip;
+						if (tab.data.length > 50) {
+							tab.videoFilter = tab.data.slice(tab.data.length-51, tab.data.length-1).map(item => item.id)
+						} else {
+							tab.videoFilter = tab.data.map(item => item.id);
+						}
+						
+						// 获取真实图片
+						if (newData && newData.length > 0) {
+							setTimeout(() => {
+								newData.forEach(item => {
+									this.requestImageUrl(item);
+								})
+							}, 200)
+						}
+						
+						// 回调
+						params.callback && params.callback(tab.data);
+					}
+				}).catch((err) => {
+					if (tab) {
+						tab.isLoading = true;
+						tab.refreshing = false;
+						tab.requestStatus = 'fail';
+					}
+				})
+			},
+			// 下拉刷新
+			onRefresh(tabId) {
+				const tab = this.tabList[this.tabIndex];
+				if (tab.refreshing) {
+					return;
+				}
+				tab.videoFilter = [];
+				tab.refreshing = true;
+				tab.page = 1;
+				tab.loadMoreStatus = "more";
+				// 重置 loadmore
+				if (this.$refs[`list${tabId}`] && this.$refs[`list${tabId}`][0]) {
+					this.$refs[`list${tabId}`][0].resetLoadmore();
+				}
+			
+				this.requestData({
+					index: this.tabIndex,
+					page: tab.page,
+					id: tab.id,
+					videoFilter: tab.videoFilter,
+					callback: (tabData) => {
+						if (tabData.length > 0) {
+							this.$nextTick(() => {
+								this.requestPlayUrl(tabData[0], this.tabIndex);
+							});
+						}
+					}
+				})
+			},
+			// 加载更多
+			loadMore() {
+				console.log('loadMore==>');
+				const tab = this.tabList[this.tabIndex];
+				if (tab.loadMoreStatus === "noMore") {
+					return;
+				}
+				tab.loadMoreStatus = "loading";
+				this.requestData({
+					index: this.tabIndex,
+					page: tab.page,
+					id: tab.id,
+					videoFilter: tab.videoFilter,
+					callback: (tabData) => {
+						
+					}
+				})
+			},
+			// 请求播放地址
+			/**
+			 * 请求播放地址
+			 * @param {Object} videoData 请求视频的相关信息 
+			 * @param {Number} tabIndex 请求时候的tab索引
+			 */
+			requestPlayUrl(videoData, tabIndex) {
+				//  判断请求是否在队列中
+				if (this.requestPlayUrlQueue && this.requestPlayUrlQueue.find(item => item === videoData.id)) {
+					return;
+				} else {
+					// 记录到请求队列
+					const requestQueue = new Set(this.requestPlayUrlQueue || []);
+					requestQueue.add(videoData.id);
+					this.requestPlayUrlQueue = [...requestQueue];
+				}
+				
+				this.isVideoLoading = true;
+				http.post({
+					url: config.api.getShortVideoPlayUrl,
+					data: {
+						vo_id: videoData.id
+					}
+				}).then((res) => {
+					// 从请求队列清除
+					const requestQueue = new Set(this.requestPlayUrlQueue || []);
+					requestQueue.delete(videoData.id); 
+					this.requestPlayUrlQueue = [...requestQueue];
+					
+					if (res.data) {
+						const data = res.data;
+						
+						videoData.state = 'stop';
+						videoData.url = data.play_url;
+						// 获取是否试看
+						videoData.try_status = data.try_status; // 状态 1:试看 2：观看完整版
+						videoData.res_is_try = data.res_is_try; // 试看资源是否完整影片 1-切的试看资源 2-完整影片资源
+						if (data.try_status === 1) {
+							// videoData.duration = this.video_try;
+							videoData.duration = data.res_is_try === 1 ? 0 : this.video_try;
+						} else {
+							// videoData.duration = config.util.dateToSecond(videoData.time_length);
+							videoData.duration = 0;
+						}
+						this.currentPlayUrl = data.play_url;
+						this.currentPlayVideoTimeLength = videoData.duration;
+						
+						this.$nextTick(() => {
+							setTimeout(() => {
+								if (this.tabIndex === tabIndex) {
+									const newTabData = this.tabList[this.tabIndex].data;
+									if (newTabData.length > 0) {
+										const newVideoData = newTabData[this['currentTab' + this.tabIndex + 'Video']]; // 当前视频数据
+										if (newVideoData.id === videoData.id) {
+											videoData.state = 'play';
+										}
+									}
+								}
+							},100);
+						});
+					}
+				}).catch((err) => {
+					this.isVideoLoading = false;
+					// 从请求队列清除
+					const requestQueue = new Set(this.requestPlayUrlQueue || []);
+					requestQueue.delete(videoData.id);
+					this.requestPlayUrlQueue = [...requestQueue];
+				})
+			},
+			//点击播放&&暂停
+			tapVideoHover(state, event) {
+				if (this.tabList[this.tabIndex] && this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']]) {
+					if (state == 'play' || state == 'continue') {
+						this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].state = 'pause';
+						this.isVideoLoading = false;
+					} else {
+						this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].state = 'continue';
+						
+						// 判断当未获取到播放地址 需要继续获取
+						const tab = this.tabList[this.tabIndex];
+						if (this.tabIndex === 0 && tab.data.length > 0 && !tab.data[this.currentTab0Video].url) {
+							this.requestPlayUrl(tab.data[this.currentTab0Video], this.tabIndex);
+						} else if (this.tabIndex === 1 && tab.data.length > 0 && !tab.data[this.currentTab1Video].url) {
+							this.requestPlayUrl(tab.data[this.currentTab1Video], this.tabIndex);
+						}
+					}
+				}
+			},
+			// 监听播放器进度
+			handleTimeupdate(e) {
+				this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].state = 'continue';
+				this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].isPlaying = true;
+				const {
+					currentTime,
+					duration
+				} = e.detail;
+				
+				const currentDateGetTime = new Date().getTime();
+				if (parseInt(currentTime) === this.videoPlayTime) {
+					// 当视频播放进度在1秒内未改变 提示视频加载中
+					if (this.currentDateGetTime && (currentDateGetTime - this.currentDateGetTime > 1000)) {
+						this.isVideoLoading = true;
+					} else { 
+						this.isVideoLoading = false;
+					}
+				} else if (parseInt(currentTime) - this.videoPlayTime > 10) {
+					// 当视频播放进度是被拖动的 提示视频加载中
+					this.isVideoLoading = true;
+				} else {
+					// 视频播放中-不显示加载中
+					this.isVideoLoading = false;
+					// 视频播放进度不相等记录当前的时间
+					if (parseInt(currentTime) !== this.videoPlayTime) {
+						this.currentDateGetTime = currentDateGetTime;
+					}
+				}
+				
+				this.videoPlayTime = parseInt(currentTime); // 记录播放秒数
+				// this.percent = (currentTime / duration * 100).toFixed(2);
+				// console.log("handleTimeupdate===>", currentTime, duration)
+				
+				// 记录-短视频播放次数
+				if (this.currentTakeCareVideoId !== this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].id && parseInt(currentTime) > 5 && this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].try_status) {
+					this.currentTakeCareVideoId = this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].id;
+					http.post({
+						url: config.api.shortVideoPlayRecord,
+						data: {
+							vo_id: this.currentTakeCareVideoId,
+							try_status: this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].try_status
+						}
+					}).then((res) => {
+					}).catch((err) => {
+					})
+				}
+				
+				// 判断是否是试看视频
+				if (this.tabList[this.tabIndex] && this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']]) {
+					const currentVideo = this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']];
+					// 获取播放视频总时长
+					if (currentVideo.try_status === 2 || currentVideo.res_is_try === 1) {
+						this.currentPlayVideoTimeLength = parseInt(duration);
+						if (currentVideo.res_is_try === 1) {
+							currentVideo.duration = parseInt(duration);
+						}
+					}
+					
+					// if (currentVideo.try_status === 1 && currentVideo.duration && currentVideo.duration > 0) {
+					if (currentVideo.try_status === 1) {
+						this.percent = (currentTime / currentVideo.duration * 100).toFixed(2);
+						// 区分试看资源是 完整资源还是切的资源
+						if ((currentVideo.res_is_try === 2 && currentVideo.duration > 0 && parseInt(currentTime) >= currentVideo.duration) || (currentVideo.res_is_try === 1 && currentVideo.duration > 0 && parseInt(currentTime) >= currentVideo.duration-2)) {
+							this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].state = 'stop';
+							this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].isPlaying = false;
+							this.percent = 0;
+							this.setSeekTime = 0;
+							// 判断收费情况
+							if (currentVideo.is_charge === 2) { // 收费
+								// 显示购买提示框
+								this.toPayTip(currentVideo);
+							} else if (currentVideo.is_charge !== 2 && this.userInfo.is_vip === 2) { // vip/免费次数用完
+								// 显示开通vip提示框
+								// this.$refs.modalKtvip.open();
+								this.$store.dispatch('getUserInfo').then(() => {
+									this.$refs.modalKtvip.open();
+								})
+								.catch((err) => {
+									this.$refs.modalKtvip.open();
+								})
+							} 
+						}
+					} else {
+						this.percent = (currentTime / duration * 100).toFixed(2);
+						
+						if (duration > 0 && duration - currentTime < 2) {
+							this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].state = 'stop';
+							this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].isPlaying = false;
+							this.setSeekTime = 0;
+							this.$nextTick(() => {
+								this.tapVideoHover(); // 播放结束重复播放
+							})
+						}
+					}
+				} else {
+					this.percent = (currentTime / duration * 100).toFixed(2);
+					
+					if (duration > 0 && duration - currentTime < 2) {
+						this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].state = 'stop';
+						this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']].isPlaying = false;
+						this.setSeekTime = 0;
+						this.$nextTick(() => {
+							this.tapVideoHover(); // 播放结束重复播放
+						})
+					}
+				}
+				// console.log("handleTimeupdate===>", this.percent, e)
+			},
+			handleEnded(e) {
+				console.log("handleEnded===>", e)
+				this.tapVideoHover(); // 播放结束重复播放
+			},
+			handleError(e) {
+				console.log("handleError===>", e)
+				
+				// 播放错误-上报服务器
+				const currentVideo = this.tabList[this.tabIndex].data[this['currentTab' + this.tabIndex + 'Video']];
+				if (currentVideo && this.currentPlayUrl && currentVideo.url && currentVideo.id && this.currentPlayUrl === currentVideo.url && !this.videoPlayTime) {
+					http.post({
+						url: config.api.videoPlayError,
+						data: {
+							video_id: currentVideo.id
+						}
+					}).then((res) => {
+						uni.showToast({
+							icon: 'none',
+							title: '视频播放失败',
+							duration: 2000
+						});
+					}).catch((err) => {})
+				}
+			},
+			handleWaiting(e) {
+				console.log("handleWaiting===>", e)
+				this.isVideoLoading = true;
+			},
+			// 点赞
+			optLike(id, tabIndex, dataIndex) {
+				if (this.likeLoading) return;
+				this.likeLoading = true;
+				http.post({
+					url: config.api.videoLike,
+					data: {
+						video_id: id
+					}
+				}).then((res) => {
+					this.likeLoading = false;
+					this.tabList[tabIndex].data[dataIndex].praise_status = 1;
+					this.tabList[tabIndex].data[dataIndex].praise++; 
+				}).catch((err) => {
+					this.likeLoading = false;
+				})
+			},
+			// 取消点赞
+			optCancelLike(id, tabIndex, dataIndex) {
+				if (this.likeCancelLoading) return;
+				this.likeCancelLoading = true;
+				http.post({
+					url: config.api.videoCancelLike,
+					data: {
+						video_ids: [id]
+					}
+				}).then((res) => {
+					this.likeCancelLoading = false;
+					this.tabList[tabIndex].data[dataIndex].praise_status = 2;
+					this.tabList[tabIndex].data[dataIndex].praise--; 
+				}).catch((err) => {
+					this.likeCancelLoading = false;
+				})
+			},
+		}
+	};
+</script>
+<style lang="scss" scoped>
+	.back-btn {
+		position: fixed;
+		left: 0;
+		top: 0;
+		z-index: 9;
+	}
+	.video-back-img {
+		width: 21rpx;
+		height: 42rpx;
+		margin-top: 2rpx;
+		margin-left: 30rpx;
+		margin-right: 30rpx;
+		margin-bottom: 10rpx;
+	}
+	.progress-box {
+		position: fixed; 
+		bottom: 0; 
+		width: 750rpx;
+		height: 30px;
+		height: 30px;
+		padding-top: 29px;
+	}
+	.progress-time {
+		position: absolute; 
+		left: 0; 
+		bottom: 1px; 
+		width: 750rpx; 
+		height: 29px; 
+		justify-content: center;
+		align-items: center;
+		background-color: rgba(0,0,0,.5);
+	}
+	.progress-time-text {
+		color: #FFFFFF;
+		font-size: 28rpx;
+		margin-bottom: 10px;
+	}
+	.progress-slider {
+		margin: 0; 
+		height: 30px; 
+		position: absolute; 
+		left: 0; 
+		bottom: 0; 
+		width: 750rpx;
+		opacity: 0; 
+	}
+	
+	.simple-douyin {
+		flex: 1;
+		background-color: #000000;
+	}
+
+	.simple-douyin-list {
+		width: 750rpx;
+		flex: 1;
+	}
+
+	/*flex  横向不换行*/
+	/*头部*/
+	.wrapper {
+		position: fixed;
+		top: 0;
+		width: 750rpx;
+	}
+
+	.nav {
+		position: relative;
+		height: 88rpx;
+		width: 750rpx;
+		justify-content: center;
+		align-items: flex-start;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		margin-top: 20rpx;
+	}
+
+	.nav-item {
+		margin: 0 30rpx;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.nav-item-title {
+		font-weight: 500;
+		color: rgba(255, 255, 255, 0.85);
+		font-size: 32rpx;
+		padding: 0 6rpx;
+	}
+
+	.nav-item-underline {
+		width: 52rpx;
+		height: 6rpx;
+		border-radius: 6rpx;
+		background-color: #ff7f00;
+		margin-top: 6rpx;
+	}
+
+	.tab-view {
+		flex: 1;
+	}
+
+	.tab-view-item {
+		flex: 1;
+	}
+
+	.video-hover {
+		position: absolute;
+		top: 0;
+		left: 0;
+		flex: 1;
+		background-color: rgba(0, 0, 0, 0.1);
+		justify-content: center;
+		align-items: center;
+	}
+
+	.play-box {
+		width: 200rpx;
+		height: 200rpx;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.play-state {
+		width: 112rpx;
+	}
+
+	.item-right {
+		position: absolute;
+		width: 86rpx;
+		right: 30rpx;
+		bottom: 60rpx;
+		text-align: center;
+		align-items: center;
+	}
+
+	.item-right-menu {
+		margin-bottom: 20rpx;
+	}
+
+	.item-right-icon {
+		width: 86rpx;
+	}
+
+	.item-right-text {
+		font-size: 24rpx;
+		color: #FFFFFF;
+		text-align: center;
+	}
+
+	.item-bottom {
+		position: absolute;
+		left: 30rpx;
+		bottom: 60rpx;
+		width: 500rpx;
+	}
+
+	.item-pay-vip {
+		font-weight: 500;
+		color: #FFFFFF;
+		font-size: 24rpx;
+		border-radius: 50rpx;
+		padding: 14rpx 30rpx;
+		background-image: linear-gradient(to right, #ffc400, #ff7f00);
+	}
+
+	.item-name {
+		font-weight: 500;
+		color: #ffffff;
+		font-size: 28rpx;
+		padding: 20rpx 0;
+	}
+
+	.item-label {
+		height: 50rpx;
+		line-height: 50rpx;
+		border-radius: 8rpx;
+		background-color: rgba(34, 34, 34, .7);
+		color: #b4b4b4;
+		font-size: 24rpx;
+		padding: 0 12rpx;
+		margin-right: 12rpx;
+	}
+	
+	.refresh {
+		width: 750rpx;
+		height: 150rpx;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		align-items: center;
+		justify-content: center;
+		color: #FFFFFF;
+	}
+</style>

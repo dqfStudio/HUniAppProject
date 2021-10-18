@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, user-scalable=0, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>乐播传媒</title>
+		<link rel="icon" sizes="any" mask href="/static/icon.svg">
+		<style>
+			html,body {
+				width: 395px;
+				height: 100%;
+				margin: 0 auto;
+				padding: 0;
+			}
+		</style>
+		<script>
+			// 判断是否pc
+			function IsPC() {
+				let userAgentInfo = navigator.userAgent;
+				let Agemts = new Array(
+					"Android",
+					"iPhone",
+					"SymbianOS",
+					"Windows Phone",
+					"iPad",
+					"iPod"
+				);
+				let flag = true;
+				for (let i = 0; i < Agemts.length; i++) {
+					if (userAgentInfo.indexOf(Agemts[i]) > 0) {
+						flag = false;
+						break;
+					}
+				}
+				return flag;
+			}
+			if (!IsPC()) {
+				window.location.replace('/'+window.top.location.search);
+			}
+		</script>
+</head>
+ 
+<body>
+	<iframe src="/" style="width: 100%; height: 100%; border: none;"></iframe>
+</body>
+
+<script>
+</script>
+</html>
+
+

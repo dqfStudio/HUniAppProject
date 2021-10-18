@@ -1,0 +1,136 @@
+<template>
+	<view class="simple-video">
+		<video
+			v-if="refId != ''"
+			:ref="`video_${refId}`"
+			:id="`video_${refId}`"
+			:src="src"
+			:poster="poster"
+			:loop="true"
+			:duration="duration"
+			:enable-progress-gesture="false"
+			:page-gesture="false"
+			:controls="false"
+			:show-fullscreen-btn="false"
+			:show-center-play-btn="false"
+			:show-loading="false"
+			class="video"
+			:style="boxStyle"
+			:initial-time="setSeekTime"
+			@play="playIng"
+			@ended="endedPlay"
+			@timeupdate="timeupdate"
+			@waiting="waiting"
+			@error="error"
+			@progress="progress"
+			@loadedmetadata="loadedmetadata"
+			codec="hardware"
+			:play-strategy="3"
+		><slot /></video>
+	</view>
+</template>
+
+<script>
+export default {
+	watch: {
+		state(newValue, oldValue) {
+			//var  videoCtx = uni.createVideoContext(`video_${this.refId}`, this);
+			const videoCtx = this.$refs[`video_${this.refId}`];
+			switch (newValue) {
+				case 'play':
+					videoCtx.play();
+					break;
+				case 'continue':
+					videoCtx.play();
+					break;
+				case 'pause':
+					videoCtx.pause();
+					break;
+				case 'stop':
+					videoCtx.stop();
+					break;
+				default:
+					break;
+			}
+		}
+	},
+	props: {
+		state: {
+			type: Boolean,
+			default() {
+				return false;
+			}
+		},
+		src: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		poster: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		boxStyle: {
+			type: Object,
+			default() {
+				return {};
+			}
+		},
+		refId: {
+			type: String,
+			default() {
+				return '';
+			}
+		},
+		duration: {
+			type: Number,
+			default() {
+				return 0;
+			}
+		},
+		setSeekTime: {
+			type: Number,
+			default() {
+				return 0;
+			}
+		}
+	},
+
+	methods: {
+		endedPlay(e) {
+			this.$emit('ended', e);
+		},
+		timeupdate(e) {
+			this.$emit('timeupdate', e);
+		},
+		waiting(e) {
+			this.$emit('waiting', e);
+		},
+		error(e) {
+			this.$emit('error', e);
+		},
+		progress(e) {
+			this.$emit('progress', e);
+		},
+		loadedmetadata(e) {
+			this.$emit('loadedmetadata', e);
+		}
+	}
+};
+</script>
+
+<style>
+.simple-video {
+	background-color: #000000;
+	position: relative;
+	flex: 1;
+}
+
+.video {
+	width: 750rpx;
+	flex: 1;
+}
+</style>

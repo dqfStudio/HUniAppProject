@@ -1,0 +1,67 @@
+<template>
+	<view class="page-base" :style="{minHeight:winHeight + 'px' }">
+		<!-- 背景图 -->
+		<image class="bg-img" src="@/static/bg.png" mode="widthFix"></image>
+		<!-- 状态栏占位 -->
+		<view class="statusBar" :style="{height:statusBarHeight + 'px'}"></view>
+		<!-- page-内容 -->
+		<view style="flex: 1;" :style="{height:pageHeight + 'px'}">
+			<slot />
+		</view>
+		<!-- 底部阴影 -->
+		<view class="btm-box-shadow" v-if="isBtmBoxShadow"></view>
+	</view>
+</template>
+
+<script>
+	/**
+	 * PageBase 基础页面
+	 * @description 基础页面-顶部背景图、底部阴影
+	 * @property {Boolean} isBtmBoxShadow 底部阴影，ture-显示 false-隐藏
+	 */
+	export default {
+		data() {
+			return {
+				winHeight: 0,
+				statusBarHeight: 0,
+				pageHeight: 0
+			}
+		},
+		props: {
+			isBtmBoxShadow: {
+				type: Boolean,
+				default: true
+			}
+		},
+		created() {
+			const deviceInfo = uni.getSystemInfoSync();
+			this.winHeight = deviceInfo.windowHeight;
+			this.statusBarHeight = deviceInfo.statusBarHeight;
+			this.pageHeight = deviceInfo.windowHeight - deviceInfo.statusBarHeight;
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style scoped>
+	.page-base {
+		flex: 1;
+		width: 750rpx;
+	}
+	
+	.bg-img {
+		position: absolute;
+		width: 750rpx;
+		z-index: 10;
+	}
+	
+	.btm-box-shadow {
+		position: fixed;
+		bottom: 0;
+		width: 750rpx;
+		height: 1px;
+		/* box-shadow: 0 0 10rpx rgba(0, 0, 0, 0.8); */
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+	}
+</style>
