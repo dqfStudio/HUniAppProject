@@ -11,7 +11,7 @@
 		</scroll-view>
 		
 		<swiper class="tab-view" :style="{height: winHeight+'px'}" :current="tabIndex" :duration="300" @change="onChangeTabPage">
-			<swiper-item v-for="(tab, index) in tabList" :key="index">
+			<swiper-item v-for="(tab, index) in tabList" :key="index" @touchmove.stop="stopTouchMove">
 				<!-- 第一个 -->
 				<template v-if="index === 0">
 					<view style="background-color: #00CE47;width: 300px;" :style="{height: winHeight+'px'}"></view>
@@ -59,6 +59,9 @@
 				let index = e.target.current || e.detail.current;
 				this.tabIndex = index;
 				this.indicatorLineTop = 45*index;
+			},
+			stopTouchMove(){
+				return true;
 			}
 		}
 	};

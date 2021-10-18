@@ -3001,7 +3001,15 @@ var render = function() {
         _vm._l(_vm._$g(7, "f"), function(tab, index, $21, $31) {
           return _c(
             "v-uni-swiper-item",
-            { key: tab, attrs: { _i: "7-" + $31 } },
+            {
+              key: tab,
+              attrs: { _i: "7-" + $31 },
+              on: {
+                touchmove: function($event) {
+                  return _vm.$handleViewEvent($event, { stop: true })
+                }
+              }
+            },
             [
               _vm._$g("8-" + $31, "i")
                 ? [
@@ -3644,7 +3652,15 @@ var render = function() {
         _vm._l(_vm._$g(7, "f"), function(tab, index, $21, $31) {
           return _c(
             "v-uni-swiper-item",
-            { key: tab, attrs: { _i: "7-" + $31 } },
+            {
+              key: tab,
+              attrs: { _i: "7-" + $31 },
+              on: {
+                touchmove: function($event) {
+                  return _vm.$handleViewEvent($event, { stop: true })
+                }
+              }
+            },
             [
               _vm._$g("8-" + $31, "i")
                 ? [
