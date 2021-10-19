@@ -8,7 +8,6 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		userInfo: uni.getStorageSync('userInfo') || {}, // 用户信息
-		liveUserInfo: uni.getStorageSync('liveUserInfo') || {}, // 直播用户信息
 		HomeGetConfig: [], // 直播用户信息
 	},
 	mutations: {

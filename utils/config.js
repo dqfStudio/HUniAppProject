@@ -5,174 +5,18 @@ const AesKey = 'c5zKcW45KYGvrlCVEVvGysnjyCh3sg4r';
 
 // #ifdef APP-PLUS
 // // 公共接口请求地址
-// const rootPath = "https://www.aijiaoyiyi.com"; //生产
-// const liveRootPath = "https://live.aijiaoyiyi.com"; //生产
- const rootPath = "http://43.129.186.219:8010"; //外测
- const liveRootPath = "http://43.129.186.219:9010"; //外测
-// const rootPath = process.env.NODE_ENV === 'development' ? "http://43.129.186.219:8010" : ""; //外网 
-// const liveRootPath = process.env.NODE_ENV === 'development' ? "http://43.129.186.219:9010" : ""; // 直播接口地址
+ const rootPath = "http://43.129.186.219:8010";
+// const rootPath = process.env.NODE_ENV === 'development' ? "http://43.129.186.219:8010" : "";
 // #endif
 
 // #ifdef H5
- const rootPath = "http://43.129.186.219:8010"; //外测
- const liveRootPath = "http://43.129.186.219:9010"; //外测
-// const rootPath = process.env.NODE_ENV === 'development' ? "http://43.129.186.219:8010" : "https://www.cxsdds.cn"; //外网 
-// const liveRootPath = process.env.NODE_ENV === 'development' ? "http://43.129.186.219:9010" : "https://live.cxsdds.cn"; // 直播接口地址
+ const rootPath = "http://43.129.186.219:8010";
+// const rootPath = process.env.NODE_ENV === 'development' ? "http://43.129.186.219:8010" : "https://baidu.com";
 // #endif
 
 // api 地址
 const api = {
 	startAdvert: "/api/start/ad", // 启动页广告
-	auth: "/api/account/auth", // 账号验证
-	category: "/api/category", // 首页分类
-	home: "/api/home", // 首页接口
-	categoryData: "/api/category/data", // 分类数据信息
-	getTopicList: "/api/topic/more", // 专题-更多
-	getTodayUpdate: "/api/video/today/update", // 今日更新
-	getRecentUpdate: "/api/video/last/update", // 最近更新
-	getRecordHot: "/api/record/hot", // 搜索记录与热搜
-	hotInc: "/api/hot/inc", // 热搜打点
-	getSearchList: "/api/search", // 搜索-结果列表
-	delSearchRecord: "/api/del/record", // 一键删除记录
-	getVideoInfo: "/api/video", // 长视频详情
-	getVideoUrl: "/api/video/url", // 长视频播放地址
-	getVideoDownload: "/api/video/download", // 长视频下载地址
-	payVideo: "/api/video/buy", // 购买视频播放
-	saveVideoWatchat: "/api/video/watchat", // 观看视频位置
-	saveVideoPlayTime: "/api/video/playTime", // 观看视频真实总时长
-	getVideoRecommend: "/api/video/recommend", // 长视频 相关推荐接口
-	getShortVideoList: "/api/video/little", // 短视频列表
-	getShortVideoPlayUrl: "/api/video/small/url", // 短视频播放地址获取
-	shortVideoPlayRecord: "/api/video/record/times", // 短视频播放记录次数
-	videoLike: "/api/video/praise", // 视频 点赞
-	videoCancelLike: "/api/video/praise/cancel", // 我的喜欢 取消
-	getCommentList: "/api/comment/list", // 评论-评论列表
-	addComment: "/api/comment/push", // 发表评论
-	getUserInfo: "/api/user/me", // 获取用户信息
-	getUserFeedBack: "/api/user/feedback", // 获取用户反馈
-	getUserLike: "/api/user/like", // 获取用户喜欢视频
-	getRecord: "/api/user/play/history", // 获取观影记录
-	cancelRecord: "/api/user/play/cancel", // 清除用户观看记录
-	// getPromotion: "/api/user/spread/detail", // 获取推广信息-老版本
-	getPromotion: "/api/user/promote", // 获取推广信息
-	promotionReceiveAwar: "/api/user/receive-award", // 获取推广-完成任务领取
-	getVIPprivilege: "/api/user/vipset", // 获取VIP特权
-	changeUserInfo: "/api/user/edit", // 更改用户信息
-	getVerificationCode: "/api/verification/code", // 发送手机验证码
-	changeMobile: "/api/user/change/mobile", // 更换手机号
-	checkMobile: "/api/user/check/mobile", // 校验手机号
-	resetPwd: "/api/password/reset", // 忘记密码/重置密码
-	bindMobile: "/api/user/band/mobile", // 绑定手机号
-	bindMobileV1: "/api/user/v1/band-mobile", // 绑定手机号-新
-	register: "/api/user/register", // 用户注册接口
-	login: "/api/user/login", // 用户登录接口
-	qrcodeLogin: "/api/user/code-login", // 扫码登录接口
-	getNotice: "/api/announcement/lists", // 公告列表
-	getSearchText: "/api/search/box/info", // 搜索框内数据
-	telnetShow: "/api/user/online", //用户上线通知
-	exitHide: "/api/user/offline", //用户下线通知
-	clickVolume: "/api/user/advert/click", //广告点击量
-	uploadHeadImg: "/api/user/head/upload", // 上传头像
-	onlinePay: "/api/online/pay", // 在线充值
-	payRecord: "/api/user/pay/record", // 充值记录
-	behavior: "/api/record/behavior", // 行为上报
-	activityList: "/api/activity/list", // 活动列表
-	activityDraftList: "/api/activity/draft", // 投稿列表
-	activityBrowse: "/api/activity/browse", // 活动浏览
-	activityCommentList: "/api/activity/comment", // 评论详情
-	activityUserComment: "/api/activity/user/comment", // 用户评论
-	activityPraise: "/api/activity/praise", // 点赞/取消点赞
-	activityVotes: "/api/activity/votes", // 投票
-	activityReward: "/api/activity/reward", // 打赏
-	activityTagList: "/api/activity/tag", // 投稿标签列表
-	activityDraft: "/api/activity/send/script", // 投稿
-	messageList: "/api/user/msg/center", // 用户消息中心
-	specialArea: "/api/special-area", // 专区
-	specialAreaMore: "/api/special-area/more", // 专区更多
-	communityTopic: "/api/community/topic", // 话题
-	communityActivity: "/api/community/activity", // 官方活动
-	communityRecommend: "/api/community/recommend", // 推荐
-	communityTopicList: "/api/community/topic-detail", // 话题详情
-	videoPlayError: "/api/video/video-error", // 视频播放错误上报
-	loginLive: "/api/live/login", // 登陆直播
-	getChannelList: "/api/channel/list-ons", // 获取渠道可用地址
-	createAgent: "/api/agent/store", // 创建代理
-	loginV1: "/api/user/v1/login", // 登录新接口
-	registerV1: "/api/user/v1/register", // 注册新接口
-	captcha: "/api/captcha", // 获取验证码
-	getYhAmount: "/api/user/v1/yh-amount", // 获取yh用户余额
-	moneyToYhAmount: "/api/user/v1/receive-wins", // 转换彩金到英皇
-	yhLogin: "/api/user/v1/silent-login", // 英皇登录
-	yhVenueList: "/api/game/v1/room-list", // 场馆列表
-	yhVenueDzList: "/api/game/v1/room-dz-list", // 电子列表
-	yhVenueUrl: "/api/game/v1/room-url", // 获取地址
-	agentStore: "/api/agent/store", // 创建代理用户
-	agentDetail: "/api/agent/detail", // 代理详情
-}
-
-const liveApi = {
-	loginUserReg: 'Login.UserReg', // 注册
-	loginUserLogin: 'Login.UserLogin', // 登录
-	loginGetCode: 'Login.GetCode', // 登录
-	homeGetConfig: 'Home.GetConfig', // 获取配置信息
-	homeGetNew: 'Home.GetNew', // 获取首页最新开播的主播列表
-	homeGetRecommend: 'Home.GetRecommend', // 显示推荐主播
-	homeGetRecommendLive: 'Home.GetRecommendLive', // 获取首页推荐主播
-	homeGetClassLive: 'Home.GetClassLive', // 获取分类下的直播
-	homeGetHot: 'Home.GetHot', // 获取首页热门主播
-	homeProfit: 'Home.ProfitList', // 收益榜单
-	homeConsumeList: 'Home.ConsumeList', // 获取消费榜单
-	homeGetFollow: 'Home.GetFollow', // 用户关注的主播的直播列表
-	homeGetUserHome: 'User.GetUserHome', // 获取个人主页数据
-	userSetAttent: 'User.SetAttent', // 用于关注/取消关注
-	userGetUserLabel: 'User.GetUserLabel', // 获取所有的印象标签
-	userSetUserLabel: 'User.SetUserLabel', // 设置所有的印象标签
-	userSetBlack: 'User.SetBlack', // 设置拉黑/取消拉黑
-	userGetFansList: 'User.GetFansList', // 获取粉丝
-	userGetFollowsList: 'User.GetFollowsList', // 获取关注
-	dynamicGetHomeDynamic: 'Dynamic.GetHomeDynamic', // 个人主页动态
-	dynamicGetDynamic: 'Dynamic.GetDynamic', // 动态详情
-	dynamicGetComments: 'Dynamic.GetComments', // 动态评论列表
-	dynamicGetReplys: 'Dynamic.GetReplys', // 获取动态回复列表
-	dynamicAddLike: 'Dynamic.AddLike', // 动态点赞
-	dynamicGetReportlist: 'Dynamic.GetReportlist', // 举报类型列表
-	dynamicReport: 'Dynamic.Report', // 举报
-	dynamicAddCommentLike: 'Dynamic.AddCommentLike', // 评论点赞
-	dynamicDel: 'Dynamic.Del', // 删除动态
-	dynamicDelComments: 'Dynamic.DelComments', // 删除评论
-	dynamicSetComment: 'Dynamic.SetComment', // 用户评论动态/回复别人的评论
-	dynamicSearchHotLabels: 'Dynamic.SearchHotLabels', // 搜索界面推荐的话题标签
-	dynamicSearchLabels: 'Dynamic.SearchLabels', // 搜索话题
-	dynamicGetLabelDynamic: 'Dynamic.GetLabelDynamic', // 获取热门话题下的动态
-	dynamicGetDynamicLabels: 'Dynamic.GetDynamicLabels', // 获取动态话题标签
-	dynamicGetHotDynamicLabels: 'Dynamic.GetHotDynamicLabels', // 获取热门话题下的动态
-	dynamicGetRecommendDynamics: 'Dynamic.GetRecommendDynamics', // 获取推荐动态
-	dynamicGetNewDynamic: 'Dynamic.GetNewDynamic', // 获取最新动态列表
-	dynamicGetAttentionDynamic: 'Dynamic.GetAttentionDynamic', // 获取关注的动态列表
-	dynamicSetDynamic: 'Dynamic.SetDynamic', // 发布动态
-	guardGetGuardList: 'Guard.GetGuardList', // 获取守护用户列表
-	liveGetReportClass: 'Live.GetReportClass', // 获取用户举报类型
-	liveSetReport: 'Live.SetReport', // 提交用户举报
-	liveContributeIndex: '/Appapi/contribute/index', // 个人主页贡献榜
-	messageGetList: 'Message.GetList', // 系统消息
-	userGetUidsInfo: 'User.GetUidsInfo', // 用于获取多用户信息
-	userGetProfit: 'User.GetProfit', // 我的收益
-	userSetUserAccount: 'User.SetUserAccount', // 添加账户
-	userGetUserAccountList: 'User.GetUserAccountList', // 获取用户提现账号
-	userDelUserAccount: 'User.DelUserAccount', // 删除用户提现账号
-	userSetCash: 'User.SetCash', // 进行用户提现
-	userAppApiCashIndex: '/Appapi/cash/index', // 进行用户提现
-	liveCheckLive: 'Live.CheckLive', // 用于检测房间状态
-	liveRoomCharge: 'Live.RoomCharge', // 用于房间扣费
-	liveGetAdminList: 'Live.GetAdminList', // 管理员列表
-	liveSetAdmin: 'Live.SetAdmin', // 设置/取消管理员
-	livemanageGetManageList: 'Livemanage.GetManageList', // 获取主播房间内的管理员列表
-	livemanageCancelManage: 'Livemanage.CancelManage', // 解除用户管理
-	livemanageGetShutList: 'Livemanage.GetShutList', // 获取房间禁言用户列表
-	livemanageCancelShutt: 'Livemanage.CancelShut', // 解除用户禁言
-	livemanageCancelKick: 'Livemanage.CancelKick', // 解除用户踢出 拉黑
-	livemanageGetKickList: 'Livemanage.GetKickList', // 获取房间踢出用户列表
-	livemanageGetRoomList: 'Livemanage.GetRoomList', // 获取我是管理员的直播间
 }
 
 // 工具
@@ -183,7 +27,7 @@ const util = {
 			return uni.getStorageSync('wgtInfo');
 		} else {
 			return {
-				name: '乐播'
+				name: '淘宝'
 			};
 		}
 	},
@@ -276,8 +120,6 @@ const util = {
 		const tabBarPageArr = [
 			'/pages/home/index', 
 			'/pages/game/index', 
-			'/pages/live/index', 
-			'/pages/square/index', 
 			'/pages/user/index'
 		];
 		
@@ -792,45 +634,6 @@ const util = {
 			case "liveMyDynamic": // 我的动态
 				mHelper.liveMyDynamic(main);
 				break;
-			case "liveMessage": // 消息
-				mHelper.liveMessage(main);
-				break;
-			case "liveMyIncome": // 我的收益
-				mHelper.liveMyIncome(main);
-				break;
-			case "liveMyDailyTask": // 每日任务
-				mHelper.liveMyDailyTask(main);
-				break;
-			case "liveMyRoomManage": // 房间管理
-				mHelper.liveMyRoomManage(main);
-				break;
-			case "liveMyRoomManage": // 房间管理
-				mHelper.liveMyRoomManage(main);
-				break;
-			case "liveFollow": // 关注
-				if (params.id) mHelper.liveFollow(main, parseInt(params.id));
-				break;
-			case "liveFans": // 粉丝
-				if (params.id) mHelper.liveFans(main, parseInt(params.id));
-				break;
-			case "liveEnterRoom": // 进入直播间
-				// params.roomInfo 房间信息
-				// params.roomType 房间类型 int
-				// params.roomTypeVal 收费价格 int
-				// params.listType 从哪里打开 liveHome ：从推荐进去的  liveFollow：从关注进去的 liveClass_分类id：从分类进去的
-				// params.listIndex 从哪里打开对应列表索引
-				// params.liveSdkType 直播sdk类型 0：金山 1：腾讯
-				// params.listData 列表数据
-				if (params.roomInfo) { 
-					mHelper.liveAudience(main, JSON.stringify(params.roomInfo), parseInt(params.roomType), parseInt(params.roomTypeVal), params.listType, parseInt(params.listIndex), parseInt(params.liveSdkType || 0), JSON.stringify(params.listData));
-				} else {
-					// 返回到直播间
-					mHelper.liveAudience(main);
-				}
-				break;
-			case "liveChatRoom": // 私信聊天
-				if (params.userInfo) mHelper.liveChatRoom(main, JSON.stringify(params.userInfo));
-				break;
 			default:
 				mHelper.jump(main);
 				break;
@@ -852,8 +655,6 @@ const util = {
 
 export default {
 	rootPath,
-	liveRootPath,
 	api,
-	util,
-	liveApi
+	util
 };
