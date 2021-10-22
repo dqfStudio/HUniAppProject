@@ -110,14 +110,30 @@
 		},
 		data() {
 			return {
-
+				data: [],
+                count: 30,
+                showNum: 5,
+                lineHeight: 60,
+                // animationScroll: 800,
+				animationScroll: 500,
+                animation: 3000,
 			}
 		},
 		onLoad() {
-
+            let self = this;
+            setTimeout(function(){
+                self.createData();
+            }, 1000);
 		},
 		methods: {
-
+			createData(){
+                for(let i = 1; i <= this.count; i++){
+                    this.data.push({
+                        author: 'MaoUI',
+                        subject: 'OnePlus手机 * ' + i + '部'
+                    })
+                }
+            }
 		}
 	}
 </script>
@@ -183,4 +199,9 @@
 			}
 		}
 	}
+	
+	.main{margin:30rpx;background-color: #FF6700;border-radius: 10rpx;border:1px solid #FF6700;}
+	.main .subject{height: 80rpx;font-size: 36rpx;text-align: center;line-height: 80rpx;color: #fff;}
+	.main .body{padding: 20rpx;background-color: #FFFFFF;height: 150px;}
+	.main .body .line{height: 60rpx;line-height: 60rpx;color: #007AFF;}
 </style>

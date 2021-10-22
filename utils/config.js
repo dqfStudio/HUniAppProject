@@ -165,6 +165,62 @@ const util = {
 			}
 		}
 	},
+	gotoWeb:(url, type = 0, title = '') => {
+		switch (type) {
+			case 0://打开手机APP内部浏览器
+				// #ifdef APP-PLUS
+				plus.runtime.openWeb(url);
+				// #endif
+				break;
+			case 1://打开手机APP外部浏览器
+				// #ifdef APP-PLUS
+				plus.runtime.openURL(url);
+				// #endif
+				break;
+			case 2://小程序或H5内部浏览器，兼容小程序和H5
+				uni.navigateTo({
+					url: '/pages/webview/webview?url=' + encodeURIComponent(url) + '&title=' + title
+				});
+				break;
+			default:
+				break;
+		}
+	},
+	gotoPage:(url, type = 0) => {
+		switch (type) {
+			case 0:
+				// 保留当前页面，跳转到应用内的某个页面，使用uni.navigateBack可以返回到原页面。
+				// 要注意的是navigateTo只能跳转的应用内非 tabBar 的页面的路径 , 路径后可以带参数；如果跳转url参数为tabBar的路径则无法进行跳转
+				uni.navigateTo({
+				    url: url
+				})
+				break;
+			case 1:
+				// 关闭当前页面，跳转到应用内的某个页面。
+				// 需要跳转的应用内非 tabBar 的页面的路径，路径后可以带参数
+				uni.redirectTo({
+					url: url
+				});
+				break;
+			case 2:
+				// 关闭所有页面，打开到应用内的某个页面。
+				// 需要跳转的应用内页面路径 , 路径后可以带参数。参数与路径之间使用?分隔，参数键与参数值用=相连，不同参数用&分隔；
+				// 如 'path?key=value&key2=value2'，与redirectTo不同的是如果跳转的页面路径是 tabBar 页面则不能带参数
+				uni.reLaunch({
+					url: url
+				})
+				break;
+			case 3:
+				// 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面。
+				// 需要跳转的 tabBar 页面的路径，路径后不能带参数
+				uni.switchTab({
+					url: url
+				});
+				break;
+			default:
+				break;
+		}
+	},
 	// 统计数据单位转化
 	unitToW: (value = 0) => {
 		value = parseInt(value);
