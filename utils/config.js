@@ -218,7 +218,7 @@ const util = {
 				});
 				break;
 			case 4:
-				// 动态设置tabBar时，系统的switchTab不可用，可用一下跳转方法
+				// 动态设置tabBar时，系统的switchTab不可用，可用以下跳转方法代替
 				uni.redirectTo({
 					url: url
 				});
