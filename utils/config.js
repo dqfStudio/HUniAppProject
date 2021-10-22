@@ -167,20 +167,20 @@ const util = {
 	},
 	gotoWeb:(url, type = 0, title = '') => {
 		switch (type) {
-			case 0://打开手机APP内部浏览器
+			case 0://小程序或H5内部浏览器，兼容小程序和H5
+				uni.navigateTo({
+					url: '/pages/webview/webview?url=' + encodeURIComponent(url) + '&title=' + title
+				});
+				break;
+			case 1://打开手机APP内部浏览器
 				// #ifdef APP-PLUS
 				plus.runtime.openWeb(url);
 				// #endif
 				break;
-			case 1://打开手机APP外部浏览器
+			case 2://打开手机APP外部浏览器
 				// #ifdef APP-PLUS
 				plus.runtime.openURL(url);
 				// #endif
-				break;
-			case 2://小程序或H5内部浏览器，兼容小程序和H5
-				uni.navigateTo({
-					url: '/pages/webview/webview?url=' + encodeURIComponent(url) + '&title=' + title
-				});
 				break;
 			default:
 				break;
