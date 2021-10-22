@@ -210,14 +210,20 @@ const util = {
 					url: url
 				})
 				break;
-			case 3:
+			default:
+				break;
+		}
+	},
+	gotoTab:(url, type = 0) => {
+		switch (type) {
+			case 0:
 				// 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面。
 				// 需要跳转的 tabBar 页面的路径，路径后不能带参数
 				uni.switchTab({
 					url: url
 				});
 				break;
-			case 4:
+			case 1:
 				// 动态设置tabBar时，系统的switchTab不可用，可用以下跳转方法代替
 				uni.redirectTo({
 					url: url
