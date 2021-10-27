@@ -193,45 +193,6 @@ const util = {
 		}
 		return arrTemp
 	},
-	// 验证手机号
-	/**
-	 * 验证手机号
-	 * @param {Number} code - 国家编码
-	 * @param {Number} phone - 手机号码
-	 */
-	checkPhone: (code, phone) => {
-		if (code === "" || phone === "") {
-			return "请输入手机号";
-		} else if (code === "86" && !(/^1[3456789]\d{9}$/.test(phone))) {
-			return "请输入正确手机号码";
-		} else {
-			return "";
-		}
-	},
-	// 验证用户名
-	checkUserName: (userName) => {
-		var Reg1 = /^[A-Za-z]((?=.*[A-Za-z])(?=.*\d)[^]{3,10})$/;
-		var Reg2 = /^[0-9]*$/;
-		if (userName === "") {
-			return "请输入用户名";
-		} else if (!Reg1.test(userName) || Reg2.test(userName)) {
-			return "用户名为4—11位，最少2个字母+数字组合，首位为字母";
-		} else {
-			return "";
-		}
-	},
-	// 验证密码
-	checkPwd: (password) => {
-		var Reg1 = /^(?=.*[A-Za-z])(?=.*\d)[^]{6,12}$/;
-		var Reg2 = /^[0-9]*$/;
-		if (password === "") {
-			return "请输入密码";
-		} else if (!Reg1.test(password) || Reg2.test(password)) {
-			return "密码长度为6—12位，字母+数字的组合";
-		} else {
-			return "";
-		}
-	},
 	/**
 	 * 格式化文件大小
 	 * @param {Number} filesize - 文件的大小,传入的是一个bytes为单位的参数
@@ -753,6 +714,110 @@ const date = {
 		}
 		return (h * 3600) + (m * 60) + s;
 	},
+}
+	
+// 日期处理
+const number = {
+	formatter(value, obj){
+		
+		var numberValue = Number(this.unFormatter(value))
+		var stringValue = ''
+	
+		let afterPoint = obj.afterPoint || 2;
+		let pointZero = obj.pointZero || true;
+		
+		numberValue = numberValue.toFixed(afterPoint)
+		if (!pointZero) {
+			numberValue = Number(numberValue) 
+		}
+		
+		if (obj.grouping) {
+			
+			let tmpString = String(numberValue);
+			const stringArray = tmpString.split('.');
+			let tmpStr1 = stringArray[0]
+			let tmpStr2 = stringArray[1]
+			
+			let tmpStr = []
+			let j = 0
+			for (let i=tmpStr1.length-1; i>=0; i--) {
+				let string = tmpStr1[i]
+				j++
+				if (j%4 == 0) {
+					tmpStr.push(',')
+				}
+				tmpStr.push(string)
+			}
+			
+			tmpStr = tmpStr.reverse()
+			tmpStr.push('.')
+			tmpStr.push(tmpStr2)
+			stringValue = tmpStr.join('')
+			
+		}else if (obj.conversion) {
+			
+			let tmpString = String(numberValue);
+			const stringArray = tmpString.split('.');
+			tmpString = stringArray[0]
+			let length = tmpString.length
+			
+			//金额简写恢复
+			var appendString = "";
+			var multiplyingString = "1";
+			
+			//当达到千、百万、亿、兆时，使用省略写法（K、M、B、T）
+			if (length >= 13) {
+				appendString = "T";
+				dividendString = "1000000000000";
+			}else if (length >= 9) {
+				appendString = "B";
+				dividendString = "100000000";
+			}else if (length >= 7) {
+				appendString = "M";
+				dividendString = "1000000";
+			}else if (length >= 4) {
+				appendString = "K";
+				dividendString = "1000";
+			}
+			stringValue = String(numberValue/Number(dividendString))+'${appendString}'
+		}
+		
+		let symbol = obj.symbol || '';
+		stringValue = '${symbol}' + stringValue;
+		
+		let prefix = obj.prefix || '';
+		stringValue = '${prefix}' + stringValue;
+		
+		return stringValue;
+	},
+	unFormatter(value){
+		
+		var stringValue = String(value)
+		stringValue = stringValue.replace(/[,]/g, '')
+		stringValue = stringValue.replace(/[+-]/g, '')
+		stringValue = stringValue.replace(/[R$￥₫₹]/g, '')
+	
+		var appendString = "";
+		var multiplyingString = "1";
+		//当达到千、百万、亿、兆时，使用省略写法（K、M、B、T）
+		if (stringValue.contains("T")) {
+			appendString = "T";
+			multiplyingString = "1000000000000";
+		}else if (stringValue.contains("B")) {
+			appendString = "B";
+			multiplyingString = "100000000";
+		}else if (stringValue.contains("M")) {
+			appendString = "M";
+			multiplyingString = "1000000";
+		}else if (stringValue.contains("K")) {
+			appendString = "K";
+			multiplyingString = "1000";
+		}
+		stringValue = stringValue.replace('${appendString}', '')
+		stringValue = String(Number(stringValue)*Number(multiplyingString))
+	
+		return stringValue;
+	}
 }	
 
 export default {
