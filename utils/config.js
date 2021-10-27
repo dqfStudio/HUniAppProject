@@ -719,7 +719,9 @@ const date = {
 // 日期处理
 const number = {
 	formatter(value, obj){
-		
+		if (!obj) {
+			obj = {}
+		}
 		var numberValue = Number(this.unFormatter(value))
 		var stringValue = ''
 	
@@ -731,7 +733,35 @@ const number = {
 			numberValue = Number(numberValue) 
 		}
 		
-		if (obj.grouping) {
+		stringValue = String(numberValue);
+		
+		if (obj.conversion) {
+			
+			let tmpString = String(numberValue);
+			const stringArray = tmpString.split('.');
+			tmpString = stringArray[0]
+			let length = tmpString.length
+			
+			//金额简写恢复
+			var appendString = "";
+			var dividendString = "1";
+			
+			//当达到千、百万、亿、兆时，使用省略写法（K、M、B、T）
+			if (length >= 13) {
+				appendString = "T";
+				dividendString = "1000000000000";
+			}else if (length >= 9) {
+				appendString = "B";
+				dividendString = "100000000";
+			}else if (length >= 7) {
+				appendString = "M";
+				dividendString = "1000000";
+			}else if (length >= 4) {
+				appendString = "K";
+				dividendString = "1000";
+			}
+			stringValue = String(parseInt(numberValue/Number(dividendString))).concat(appendString);
+		}else if (obj.grouping) {
 			
 			let tmpString = String(numberValue);
 			const stringArray = tmpString.split('.');
@@ -754,39 +784,13 @@ const number = {
 			tmpStr.push(tmpStr2)
 			stringValue = tmpStr.join('')
 			
-		}else if (obj.conversion) {
-			
-			let tmpString = String(numberValue);
-			const stringArray = tmpString.split('.');
-			tmpString = stringArray[0]
-			let length = tmpString.length
-			
-			//金额简写恢复
-			var appendString = "";
-			var multiplyingString = "1";
-			
-			//当达到千、百万、亿、兆时，使用省略写法（K、M、B、T）
-			if (length >= 13) {
-				appendString = "T";
-				dividendString = "1000000000000";
-			}else if (length >= 9) {
-				appendString = "B";
-				dividendString = "100000000";
-			}else if (length >= 7) {
-				appendString = "M";
-				dividendString = "1000000";
-			}else if (length >= 4) {
-				appendString = "K";
-				dividendString = "1000";
-			}
-			stringValue = String(numberValue/Number(dividendString))+'${appendString}'
 		}
 		
 		let symbol = obj.symbol || '';
-		stringValue = '${symbol}' + stringValue;
+		stringValue = symbol.concat(stringValue);
 		
 		let prefix = obj.prefix || '';
-		stringValue = '${prefix}' + stringValue;
+		stringValue = prefix.concat(stringValue);
 		
 		return stringValue;
 	},

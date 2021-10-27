@@ -15,11 +15,95 @@
 			}
 		},
 		onLoad() {
-			
-			
+			let string = this.formatter(123456.780, {
+				afterPoint: 3,
+				pointZero: true,
+				grouping: true,
+				// conversion: true,
+				
+			})
+			// let string = this.formatter(123456.789)
+			console.log(string)
 		},
 		methods: {
+			formatter(value, obj){
+				
+				if (!obj) {
+					obj = {}
+				}
+				// var numberValue = Number(this.unFormatter(value))
+				var numberValue = Number(value)
+				var stringValue = ''
 			
+				let afterPoint = obj.afterPoint || 2;
+				let pointZero = obj.pointZero || true;
+				
+				numberValue = numberValue.toFixed(afterPoint)
+				if (!pointZero) {
+					numberValue = Number(numberValue) 
+				}
+				
+				stringValue = String(numberValue);
+				
+				if (obj.conversion) {
+					
+					let tmpString = String(numberValue);
+					const stringArray = tmpString.split('.');
+					tmpString = stringArray[0]
+					let length = tmpString.length
+					
+					//金额简写恢复
+					var appendString = "";
+					var dividendString = "1";
+					
+					//当达到千、百万、亿、兆时，使用省略写法（K、M、B、T）
+					if (length >= 13) {
+						appendString = "T";
+						dividendString = "1000000000000";
+					}else if (length >= 9) {
+						appendString = "B";
+						dividendString = "100000000";
+					}else if (length >= 7) {
+						appendString = "M";
+						dividendString = "1000000";
+					}else if (length >= 4) {
+						appendString = "K";
+						dividendString = "1000";
+					}
+					stringValue = String(parseInt(numberValue/Number(dividendString))).concat(appendString);
+				}else if (obj.grouping) {
+					
+					let tmpString = String(numberValue);
+					const stringArray = tmpString.split('.');
+					let tmpStr1 = stringArray[0]
+					let tmpStr2 = stringArray[1]
+					
+					let tmpStr = []
+					let j = 0
+					for (let i=tmpStr1.length-1; i>=0; i--) {
+						let string = tmpStr1[i]
+						j++
+						if (j%4 == 0) {
+							tmpStr.push(',')
+						}
+						tmpStr.push(string)
+					}
+					
+					tmpStr = tmpStr.reverse()
+					tmpStr.push('.')
+					tmpStr.push(tmpStr2)
+					stringValue = tmpStr.join('')
+					
+				}
+				
+				let symbol = obj.symbol || '';
+				stringValue = symbol.concat(stringValue);
+				
+				let prefix = obj.prefix || '';
+				stringValue = prefix.concat(stringValue);
+				
+				return stringValue;
+			}
 		}
 	}
 </script>
