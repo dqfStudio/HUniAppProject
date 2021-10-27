@@ -86,7 +86,7 @@ const util = {
 	 * @param {String} url - 链接地址
 	 * @return {Boolean} 返回是否
 	 */
-	isExternalLink: (url = '') => {
+	isWebLink:(url = '') => {
 		if (url.indexOf("https://") === 0 || url.indexOf("http://") === 0) {
 			return true;
 		}
@@ -232,108 +232,6 @@ const util = {
 			return "";
 		}
 	},
-	// 时间转化-秒转时分秒
-	secondToDate(result, lang = '') {
-		var h = Math.floor(result / 3600);
-		var m = Math.floor((result / 60 % 60));
-		var s = Math.floor((result % 60));
-
-		let timeText = "";
-		if (lang === 'mm:ss') {
-			let mText = (m > 9 ? m : `0${m}`);
-			let sText = (s > 9 ? s : `0${s}`);
-			
-			return result = mText + ':' + sText;
-		}
-		
-		if (h > 0) {
-			timeText += h + "小时";
-		}
-		if (m > 0) {
-			timeText += m + "分";
-		}
-
-		return result = timeText + s + "秒";
-	},
-	// 时间转化-时分秒转秒
-	dateToSecond(result) {
-		if (!result) return result;
-		const timeLenght = result.split(':');
-		let h = 0,
-			m = 0,
-			s = 0;
-		if (timeLenght.length > 2) {
-			h = parseInt(timeLenght[0]);
-			m = parseInt(timeLenght[1]);
-			s = parseInt(timeLenght[2]);
-		} else if (timeLenght.length > 1) {
-			m = parseInt(timeLenght[0]);
-			s = parseInt(timeLenght[1]);
-		} else {
-			s = parseInt(result);
-		}
-
-		return (h * 3600) + (m * 60) + s;
-	},
-	/**
-	 * 手机脱敏
-	 * @param {String} text - 操作的文本
-	 * @param {Number} start - 前面保留位数
-	 * @param {Number} end - 后面面保留位数
-	 * @param {String} maskChar - 替换的符号
-	 */
-	maskText(text, start = 2, end = 4, maskChar = '*') {
-		const startStr = text.slice(0, start);
-		const endStr = text.slice(start, text.length);
-		return startStr + endStr.slice(-end).padStart(endStr.length, maskChar);
-	},
-	// 评论时间计算 刚刚 某分钟前 昨天 前天
-	dateTimeStamp(dateTimeStamp) {
-		//dateTimeStamp是一个时间毫秒，注意时间戳是秒的形式，在这个毫秒的基础上除以1000，就是十位数的时间戳。13位数的都是时间毫秒。
-		let minute = 1000 * 60; //把分，时，天，周，半个月，一个月用毫秒表示
-		let hour = minute * 60;
-		let day = hour * 24;
-		let week = day * 7;
-		let halfamonth = day * 15;
-		let month = day * 30;
-		let now = new Date().getTime(); //获取当前时间毫秒
-		console.log(now)
-		let diffValue = now - dateTimeStamp; //时间差
-
-		if (diffValue < 0) {
-			return;
-		}
-		let minC = diffValue / minute; //计算时间差的分，时，天，周，月
-		let hourC = diffValue / hour;
-		let dayC = diffValue / day;
-		let weekC = diffValue / week;
-		let monthC = diffValue / month;
-		let result = "";
-		if (monthC >= 1 && monthC <= 3) {
-			result = " " + parseInt(monthC) + "月前"
-		} else if (weekC >= 1 && weekC <= 3) {
-			result = " " + parseInt(weekC) + "周前"
-		} else if (dayC >= 1 && dayC <= 6) {
-			result = " " + parseInt(dayC) + "天前"
-		} else if (hourC >= 1 && hourC <= 23) {
-			result = " " + parseInt(hourC) + "小时前"
-		} else if (minC >= 1 && minC <= 59) {
-			result = " " + parseInt(minC) + "分钟前"
-		} else if (diffValue >= 0 && diffValue <= minute) {
-			result = "刚刚"
-		} else {
-			let datetime = new Date();
-			datetime.setTime(dateTimeStamp);
-			let Nyear = datetime.getFullYear();
-			let Nmonth = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-			let Ndate = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-			let Nhour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-			let Nminute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-			let Nsecond = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-			result = Nyear + "-" + Nmonth + "-" + Ndate
-		}
-		return result;
-	},
 	/**
 	 * 格式化文件大小
 	 * @param {Number} filesize - 文件的大小,传入的是一个bytes为单位的参数
@@ -352,54 +250,6 @@ const util = {
 		// 保留的小数位数
 		size = size.toFixed(1);
 		return size + unitArr[index];
-	},
-
-	/**
-	 * 获取当前时间 格式：yyyy-MM-dd HH:MM:SS
-	 */
-	getCurrentTime() {
-		// 补零
-		const zeroFill = (i) => {
-			if (i >= 0 && i <= 9) {
-				return "0" + i;
-			} else {
-				return i;
-			}
-		}
-
-		let date = new Date(); //当前时间
-		let month = zeroFill(date.getMonth() + 1); //月
-		let day = zeroFill(date.getDate()); //日
-		let hour = zeroFill(date.getHours()); //时
-		let minute = zeroFill(date.getMinutes()); //分
-		let second = zeroFill(date.getSeconds()); //秒
-
-		return `${date.getFullYear()}-${month}-${day} ${hour}:${minute}:${second}`;
-	},
-	/**
-	 * 时间戳格式化 格式：yyyy-MM-dd HH:MM:SS
-	 */
-	timestampFormat(timestamp = +new Date()) {
-		// 补零
-		const zeroFill = (i) => {
-			if (i >= 0 && i <= 9) {
-				return "0" + i;
-			} else {
-				return i;
-			}
-		}
-		if (timestamp) {
-			let time = new Date(timestamp);
-			let y = time.getFullYear(); //getFullYear方法以四位数字返回年份
-			let M = time.getMonth() + 1; // getMonth方法从 Date 对象返回月份 (0 ~ 11)，返回结果需要手动加一
-			let d = time.getDate(); // getDate方法从 Date 对象返回一个月中的某一天 (1 ~ 31)
-			let h = time.getHours(); // getHours方法返回 Date 对象的小时 (0 ~ 23)
-			let m = time.getMinutes(); // getMinutes方法返回 Date 对象的分钟 (0 ~ 59)
-			let s = time.getSeconds(); // getSeconds方法返回 Date 对象的秒数 (0 ~ 59)
-			return `${y}-${zeroFill(M)}-${zeroFill(d)} ${zeroFill(h)}:${zeroFill(m)}:${zeroFill(s)}`;
-		} else {
-			return '';
-		}
 	},
 	/**
 	 * 判断是否是对象
@@ -634,18 +484,6 @@ const util = {
 				break;
 		}
 	},
-	// 限制 只输入数字 包括不能输入字符和小数点
-  //  @input="bank.card_number = Utils.number(bank.card_number)" v-model="bank.card_number"
-  number (str, float = false) {
-	str = String(str);
-	// float = true 可以输入小数点
-	if (float) {
-	  return str.replace(/[^\d.]/g, '').replace(/^0{1,}/g,'')
-	}
-	else {
-	  return str.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')
-	}
-  },
 }
 
 // 输入校验
@@ -770,11 +608,157 @@ const field = {
 		  return text.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')
 		}
 	},
+	/**
+	 * 手机脱敏
+	 * @param {String} text - 操作的文本
+	 * @param {Number} prefix - 前面保留位数
+	 * @param {Number} suffix - 后面保留位数
+	 * @param {String} maskChar - 替换的符号
+	 */
+	maskText(text, prefix = 2, suffix = 4, maskChar = '*') {
+		const prefixStr = text.slice(0, prefix);
+		const suffixStr = text.slice(prefix, text.length);
+		return prefixStr + suffixStr.slice(-suffix).padStart(suffixStr.length, maskChar);
+	},
 }
+
+// 日期处理
+const date = {
+	// 获取当前时间 格式：yyyy-MM-dd HH:MM:SS
+	now() {
+		// 补零
+		const zeroFill = (i) => {
+			if (i >= 0 && i <= 9) {
+				return "0" + i;
+			}
+			return i;
+		}
+		let date = new Date(); //当前时间
+		let month = zeroFill(date.getMonth() + 1); //月
+		let day = zeroFill(date.getDate()); //日
+		let hour = zeroFill(date.getHours()); //时
+		let minute = zeroFill(date.getMinutes()); //分
+		let second = zeroFill(date.getSeconds()); //秒
+		return `${date.getFullYear()}-${month}-${day} ${hour}:${minute}:${second}`;
+	},
+	// 时间戳格式化 格式：yyyy-MM-dd HH:MM:SS
+	timestampToDate(timestamp = +new Date()) {
+		// 补零
+		const zeroFill = (i) => {
+			if (i >= 0 && i <= 9) {
+				return "0" + i;
+			}
+			return i;
+		}
+		if (timestamp) {
+			let time = new Date(timestamp);
+			let y = time.getFullYear(); //getFullYear方法以四位数字返回年份
+			let M = time.getMonth() + 1; // getMonth方法从 Date 对象返回月份 (0 ~ 11)，返回结果需要手动加一
+			let d = time.getDate(); // getDate方法从 Date 对象返回一个月中的某一天 (1 ~ 31)
+			let h = time.getHours(); // getHours方法返回 Date 对象的小时 (0 ~ 23)
+			let m = time.getMinutes(); // getMinutes方法返回 Date 对象的分钟 (0 ~ 59)
+			let s = time.getSeconds(); // getSeconds方法返回 Date 对象的秒数 (0 ~ 59)
+			return `${y}-${zeroFill(M)}-${zeroFill(d)} ${zeroFill(h)}:${zeroFill(m)}:${zeroFill(s)}`;
+		}
+		return '';
+	},
+	// 评论时间计算 刚刚 某分钟前 昨天 前天
+	dateDiff(dateTimeStamp) {
+		//dateTimeStamp是一个时间毫秒，注意时间戳是秒的形式，在这个毫秒的基础上除以1000，就是十位数的时间戳。13位数的都是时间毫秒。
+		let minute = 1000 * 60; //把分，时，天，周，半个月，一个月用毫秒表示
+		let hour = minute * 60;
+		let day = hour * 24;
+		let week = day * 7;
+		let halfamonth = day * 15;
+		let month = day * 30;
+		let now = new Date().getTime(); //获取当前时间毫秒
+		console.log(now)
+		let diffValue = now - dateTimeStamp; //时间差
+	
+		if (diffValue < 0) {
+			return;
+		}
+		let minC = diffValue / minute; //计算时间差的分，时，天，周，月
+		let hourC = diffValue / hour;
+		let dayC = diffValue / day;
+		let weekC = diffValue / week;
+		let monthC = diffValue / month;
+		let result = "";
+		if (monthC >= 1 && monthC <= 3) {
+			result = " " + parseInt(monthC) + "月前"
+		}else if (weekC >= 1 && weekC <= 3) {
+			result = " " + parseInt(weekC) + "周前"
+		}else if (dayC >= 1 && dayC <= 6) {
+			result = " " + parseInt(dayC) + "天前"
+		}else if (hourC >= 1 && hourC <= 23) {
+			result = " " + parseInt(hourC) + "小时前"
+		}else if (minC >= 1 && minC <= 59) {
+			result = " " + parseInt(minC) + "分钟前"
+		}else if (diffValue >= 0 && diffValue <= minute) {
+			result = "刚刚"
+		}else {
+			// 补零
+			const zeroFill = (i) => {
+				if (i >= 0 && i <= 9) {
+					return "0" + i;
+				}
+				return i;
+			}
+			let datetime = new Date();
+			datetime.setTime(dateTimeStamp);
+			let Nyear = datetime.getFullYear();
+			let Nmonth = zeroFill(datetime.getMonth() + 1);
+			let Ndate = zeroFill(datetime.getDate());
+			let Nhour = zeroFill(datetime.getHours());
+			let Nminute = zeroFill(datetime.getMinutes());
+			let Nsecond = zeroFill(datetime.getSeconds());
+			result = Nyear + "-" + Nmonth + "-" + Ndate
+		}
+		return result;
+	},
+	// 时间转化-秒转时分秒
+	secondToDate(result, lang = '') {
+		var h = Math.floor(result / 3600);
+		var m = Math.floor((result / 60 % 60));
+		var s = Math.floor((result % 60));
+	
+		let timeText = "";
+		if (lang === 'mm:ss') {
+			let mText = (m > 9 ? m : `0${m}`);
+			let sText = (s > 9 ? s : `0${s}`);
+			return result = mText + ':' + sText;
+		}
+		if (h > 0) {
+			timeText += h + "小时";
+		}
+		if (m > 0) {
+			timeText += m + "分";
+		}
+		return result = timeText + s + "秒";
+	},
+	// 时间转化-时分秒转秒
+	dateToSecond(result) {
+		if (!result) return result;
+		const timeLenght = result.split(':');
+		let h = 0, m = 0, s = 0;
+		if (timeLenght.length > 2) {
+			h = parseInt(timeLenght[0]);
+			m = parseInt(timeLenght[1]);
+			s = parseInt(timeLenght[2]);
+		}else if (timeLenght.length > 1) {
+			m = parseInt(timeLenght[0]);
+			s = parseInt(timeLenght[1]);
+		}else {
+			s = parseInt(result);
+		}
+		return (h * 3600) + (m * 60) + s;
+	},
+}	
 
 export default {
 	rootPath,
 	api,
 	util,
-	field
+	field,
+	date
 };

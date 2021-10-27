@@ -15,10 +15,69 @@
 			}
 		},
 		onLoad() {
+			// 补零
+			// const zeroFill = (i) => {
+			// 	if (i >= 0 && i <= 9) {
+			// 		return "0" + i;
+			// 	} else {
+			// 		return i;
+			// 	}
+			// }
 			
+			// let date = new Date(); //当前时间
+			// let now = new Date().getTime(); //获取当前时间毫秒
+			// console.log('now'+now)
+			// console.log('date'+date)
+			// console.log('year'+date.getFullYear())
+			// let month = zeroFill(date.getMonth() + 1); //月
+			// console.log('month'+month)
+			// let day = zeroFill(date.getDate()); //日
+			// console.log('day'+day)
+			// let hour = zeroFill(date.getHours()); //时
+			// console.log('hour'+hour)
+			// let minute = zeroFill(date.getMinutes()); //分
+			// console.log('minute'+minute)
+			// let second = zeroFill(date.getSeconds()); //秒
+			// console.log('second'+second)
+			
+			// let date = new Date(); //当前时间
+			// console.log('date'+date)
+			// console.log('year'+date.getFullYear())
+			// let month = date.getMonth(); //月
+			// console.log('month'+month)
+			// let day = date.getDate(); //日
+			// console.log('day'+day)
+			// let hour = date.getHours(); //时
+			// console.log('hour'+hour)
+			// let minute = date.getMinutes(); //分
+			// console.log('minute'+minute)
+			// let second = date.getSeconds(); //秒
+			// console.log('second'+second)
+			
+			// let ffff = `${date.getFullYear()}-${month}-${day} ${hour}:${minute}:${second}`;
+			// console.log('ffff'+ffff)
+			
+			let string = '12345678'
+			string = this.maskText(string, 2, 3)
+			console.log('string'+string)
 		},
 		methods: {
-
+			// maskText(text, start = 2, end = 4, maskChar = '*') {
+			// 	const startStr = text.slice(0, start);
+			// 	console.log('startStr'+startStr)
+			// 	const endStr = text.slice(start, text.length);
+			// 	console.log('endStr'+endStr)
+			// 	// return startStr + endStr.slice(-end).padStart(endStr.length, maskChar);
+			// 	console.log('string'+ endStr.slice(-end))
+			// 	// console.log('string'+ endStr.slice(end))
+			// 	console.log('string'+ endStr.slice(-end).padStart(endStr.length, maskChar))
+			// 	return startStr + endStr.slice(-end).padStart(endStr.length, maskChar);
+			// },
+			maskText(text, prefix = 2, suffix = 4, maskChar = '*') {
+				const prefixStr = text.slice(0, prefix);
+				const suffixStr = text.slice(prefix, text.length);
+				return prefixStr + suffixStr.slice(-suffix).padStart(suffixStr.length, maskChar);
+			}
 		}
 	}
 </script>
