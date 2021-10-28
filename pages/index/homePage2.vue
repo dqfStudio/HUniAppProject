@@ -69,7 +69,7 @@
 					<text style="width: 112px;height: 20px;padding-top: 5px;font-size: 14px;text-align: center;">黑客帝国</text>
 				</view>
 				<!-- 第三个 -->
-				<view style="display: flex;flex-direction: column;width: 111px;height: 100px;">
+				<view style="display: flex;flex-direction: column;width: 111px;height: 100px;" @click="openPlayPage">
 					<view style="width: 75px;height: 75px;margin: 0 16px;background-color: red;border-radius: 100%;"></view>
 					<text style="width: 111px;height: 20px;padding-top: 5px;font-size: 14px;text-align: center;">黑客帝国</text>
 				</view>
@@ -104,6 +104,7 @@
 
 <script>
 	import HTupleViewCellHoriValue4 from '@/pages/index/HTupleViewCellHoriValue4.vue'
+	import config from '@/utils/config.js'
 	export default {
 		components: {
 			HTupleViewCellHoriValue4,
@@ -133,7 +134,10 @@
                         subject: 'OnePlus手机 * ' + i + '部'
                     })
                 }
-            }
+            },
+			openPlayPage(){
+				config.util.gotoPage("/pages/index/playPage")
+			}
 		}
 	}
 </script>

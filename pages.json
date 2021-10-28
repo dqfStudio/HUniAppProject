@@ -41,6 +41,12 @@
 			"style": {
 				"navigationBarTitleText": "注册"
 			}
+		},
+		{
+			"path": "pages/index/playPage",
+			"style": {
+				"navigationBarTitleText": "播放页面"
+			}
 		}
 	],
 	"tabBar": {

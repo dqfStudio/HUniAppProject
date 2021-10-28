@@ -583,7 +583,12 @@ var render = function() {
                     width: "111px",
                     height: "100px"
                   },
-                  attrs: { _i: 34 }
+                  attrs: { _i: 34 },
+                  on: {
+                    click: function($event) {
+                      return _vm.$handleViewEvent($event)
+                    }
+                  }
                 },
                 [
                   _c("v-uni-view", {
