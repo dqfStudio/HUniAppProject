@@ -160,20 +160,6 @@ const util = {
 				break;
 		}
 	},
-	// 统计数据单位转化
-	unitToW: (value = 0) => {
-		value = parseInt(value);
-		if (value >= 10000) {
-			return (value / 10000).toFixed(1) + 'w';
-		} else {
-			return value
-		}
-	},
-	// 钱格单位转化
-	moneyUnit: (value) => {
-		value = parseInt(value);
-		return (value / 100).toFixed(2);
-	},
 	/**
 	 * tab切换
 	 * @param {Array} paramData - 原数组
