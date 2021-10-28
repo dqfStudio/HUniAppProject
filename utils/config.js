@@ -775,10 +775,11 @@ const number = {
 			let j = 0
 			for (let i=tmpStr1.length-1; i>=0; i--) {
 				let string = tmpStr1[i]
-				j++
-				if (j%4 == 0) {
+				if (j == 3) {
+					j = 0;
 					tmpStr.push(',')
 				}
+				j++
 				tmpStr.push(string)
 			}
 			
