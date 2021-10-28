@@ -725,7 +725,10 @@ const number = {
 		var numberValue = Number(this.unFormatter(value))
 		var stringValue = ''
 	
-		let afterPoint = obj.afterPoint || 2;
+		let afterPoint = 2;
+		if (obj.afterPoint >= 0) {
+			afterPoint = obj.afterPoint;
+		}
 		let pointZero = obj.pointZero || true;
 		
 		numberValue = numberValue.toFixed(afterPoint)
@@ -780,8 +783,10 @@ const number = {
 			}
 			
 			tmpStr = tmpStr.reverse()
-			tmpStr.push('.')
-			tmpStr.push(tmpStr2)
+			if (tmpStr2 && tmpStr2.length > 0) {
+				tmpStr.push('.')
+				tmpStr.push(tmpStr2)
+			}
 			stringValue = tmpStr.join('')
 			
 		}
@@ -803,21 +808,23 @@ const number = {
 	
 		var appendString = "";
 		var multiplyingString = "1";
+		
 		//当达到千、百万、亿、兆时，使用省略写法（K、M、B、T）
-		if (stringValue.contains("T")) {
+		if (stringValue.search("T") != -1) {
 			appendString = "T";
 			multiplyingString = "1000000000000";
-		}else if (stringValue.contains("B")) {
+		}else if (stringValue.search("B") != -1) {
 			appendString = "B";
 			multiplyingString = "100000000";
-		}else if (stringValue.contains("M")) {
+		}else if (stringValue.search("M") != -1) {
 			appendString = "M";
 			multiplyingString = "1000000";
-		}else if (stringValue.contains("K")) {
+		}else if (stringValue.search("K") != -1) {
 			appendString = "K";
 			multiplyingString = "1000";
 		}
-		stringValue = stringValue.replace('${appendString}', '')
+		
+		stringValue = stringValue.replace(appendString, '')
 		stringValue = String(Number(stringValue)*Number(multiplyingString))
 	
 		return stringValue;

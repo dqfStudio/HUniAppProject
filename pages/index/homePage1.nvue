@@ -15,27 +15,40 @@
 			}
 		},
 		onLoad() {
-			let string = this.formatter(123456.780, {
-				afterPoint: 3,
+			// let string = this.formatter(123456.780, {
+			// 	afterPoint: 3,
+			// 	pointZero: true,
+			// 	grouping: true,
+			// 	// conversion: true,
+				
+			// })
+			
+			let string = this.formatter('+￥123,456.789M', {
+				afterPoint: 0,
 				pointZero: true,
 				grouping: true,
 				// conversion: true,
 				
 			})
+			
 			// let string = this.formatter(123456.789)
+			
+			// let string = this.unFormatter('+￥123,456.789M')
+			
 			console.log(string)
 		},
 		methods: {
 			formatter(value, obj){
-				
 				if (!obj) {
 					obj = {}
 				}
-				// var numberValue = Number(this.unFormatter(value))
-				var numberValue = Number(value)
+				var numberValue = Number(this.unFormatter(value))
 				var stringValue = ''
 			
-				let afterPoint = obj.afterPoint || 2;
+				let afterPoint = 2;
+				if (obj.afterPoint >= 0) {
+					afterPoint = obj.afterPoint;
+				}
 				let pointZero = obj.pointZero || true;
 				
 				numberValue = numberValue.toFixed(afterPoint)
@@ -90,8 +103,10 @@
 					}
 					
 					tmpStr = tmpStr.reverse()
-					tmpStr.push('.')
-					tmpStr.push(tmpStr2)
+					if (tmpStr2 && tmpStr2.length > 0) {
+						tmpStr.push('.')
+						tmpStr.push(tmpStr2)
+					}
 					stringValue = tmpStr.join('')
 					
 				}
@@ -102,6 +117,36 @@
 				let prefix = obj.prefix || '';
 				stringValue = prefix.concat(stringValue);
 				
+				return stringValue;
+			},
+			unFormatter(value){
+				
+				var stringValue = String(value)
+				stringValue = stringValue.replace(/[,]/g, '')
+				stringValue = stringValue.replace(/[+-]/g, '')
+				stringValue = stringValue.replace(/[R$￥₫₹]/g, '')
+			
+				var appendString = "";
+				var multiplyingString = "1";
+				
+				//当达到千、百万、亿、兆时，使用省略写法（K、M、B、T）
+				if (stringValue.search("T") != -1) {
+					appendString = "T";
+					multiplyingString = "1000000000000";
+				}else if (stringValue.search("B") != -1) {
+					appendString = "B";
+					multiplyingString = "100000000";
+				}else if (stringValue.search("M") != -1) {
+					appendString = "M";
+					multiplyingString = "1000000";
+				}else if (stringValue.search("K") != -1) {
+					appendString = "K";
+					multiplyingString = "1000";
+				}
+				
+				stringValue = stringValue.replace(appendString, '')
+				stringValue = String(Number(stringValue)*Number(multiplyingString))
+			
 				return stringValue;
 			}
 		}
