@@ -837,5 +837,6 @@ export default {
 	api,
 	util,
 	field,
-	date
+	date,
+	number
 };
