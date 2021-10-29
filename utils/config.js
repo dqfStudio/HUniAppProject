@@ -26,9 +26,7 @@ const util = {
 		if (uni.getStorageSync('wgtInfo')) {
 			return uni.getStorageSync('wgtInfo');
 		}else {
-			return {
-				name: '淘宝'
-			};
+			return { name: '淘宝' };
 		}
 	},
 	/**
