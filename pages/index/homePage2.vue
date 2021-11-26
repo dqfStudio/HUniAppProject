@@ -1,6 +1,6 @@
 <template>
 	<view class="tupleView">
-		<HTupleViewCellHoriValue :cellHeight="120"></HTupleViewCellHoriValue>
+		<HTupleViewCellHoriValue :cellHeight="120" :cellWidth="winWidth"></HTupleViewCellHoriValue>
 		<HTupleViewCellHoriValue :rightImageHidden="true" :arrowHidden="true"></HTupleViewCellHoriValue>
 		<!-- 第一个item -->
 		<view class="cell">
@@ -112,6 +112,7 @@
 		data() {
 			return {
 				data: [],
+				winWidth: 0,
                 count: 30,
                 showNum: 5,
                 lineHeight: 60,
@@ -125,6 +126,11 @@
             setTimeout(function(){
                 self.createData();
             }, 1000);
+			
+			this.winWidth = uni.getSystemInfoSync().windowWidth - 20;
+		},
+		onReady() {
+			
 		},
 		methods: {
 			createData(){
