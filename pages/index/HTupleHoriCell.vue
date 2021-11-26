@@ -82,7 +82,7 @@
 				handler: function(newVal) {
 					var winWidth = newVal;
 					if (newVal <= 0) {
-						winWidth = uni.getSystemInfoSync().windowWidth;
+						winWidth = uni.getSystemInfoSync().windowWidth-20;
 					}
 					this.pre_cellWidth = winWidth
 					this.pre_contentWidth = winWidth-20;
