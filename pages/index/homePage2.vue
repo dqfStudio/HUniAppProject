@@ -1,7 +1,7 @@
 <template>
 	<view class="tupleView">
-		<HTupleViewCellHoriValue :cellHeight="120" :cellWidth="winWidth"></HTupleViewCellHoriValue>
-		<HTupleViewCellHoriValue :rightImageHidden="true" :arrowHidden="true"></HTupleViewCellHoriValue>
+		<HTupleHoriCell :cellHeight="120" :cellWidth="winWidth"></HTupleHoriCell>
+		<HTupleHoriCell :rightImageHidden="true" :arrowHidden="true"></HTupleHoriCell>
 		<!-- 第一个item -->
 		<view class="cell">
 			<!-- content -->
@@ -103,11 +103,11 @@
 </template>
 
 <script>
-	import HTupleViewCellHoriValue from '@/pages/index/HTupleViewCellHoriValue.vue'
+	import HTupleHoriCell from '@/pages/index/HTupleHoriCell.vue'
 	import config from '@/utils/config.js'
 	export default {
 		components: {
-			HTupleViewCellHoriValue,
+			HTupleHoriCell,
 		},
 		data() {
 			return {
