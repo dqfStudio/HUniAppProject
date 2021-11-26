@@ -1,7 +1,7 @@
 <template>
 	<view class="tupleView">
-		<!-- <HTupleViewCellHoriValue4></HTupleViewCellHoriValue4>
-		<HTupleViewCellHoriValue4 :rightImageHidden="true" :arrowHidden="true" :accessoryHidden="true"></HTupleViewCellHoriValue4> -->
+		<HTupleViewCellHoriValue :cellHeight="120"></HTupleViewCellHoriValue>
+		<HTupleViewCellHoriValue :rightImageHidden="true" :arrowHidden="true"></HTupleViewCellHoriValue>
 		<!-- 第一个item -->
 		<view class="cell">
 			<!-- content -->
@@ -103,11 +103,11 @@
 </template>
 
 <script>
-	import HTupleViewCellHoriValue4 from '@/pages/index/HTupleViewCellHoriValue4.vue'
+	import HTupleViewCellHoriValue from '@/pages/index/HTupleViewCellHoriValue.vue'
 	import config from '@/utils/config.js'
 	export default {
 		components: {
-			HTupleViewCellHoriValue4,
+			HTupleViewCellHoriValue,
 		},
 		data() {
 			return {
@@ -143,69 +143,75 @@
 </script>
 
 <style lang="scss">
-	.tupleView {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		justify-content: center;
-		background-color: red;
+	//第一种样式写法
+	.tupleView{display: flex;align-items: center;flex-direction: column;justify-content: center;background-color: red;}
+	.tupleView .cell{display: flex;flex-direction: column;width: 710rpx;height: 66px;margin: 0 10px;background-color: gray;}
+	.tupleView .cell .content{display: flex;flex-direction: row;width: 670rpx;height: 65px;margin: 10px 10px;}
+	.tupleView .cell .content .leftImage{width: 45px;height: 45px;margin-right: 10px;background-color: red;}
+	.tupleView .cell .content .textContent{display: flex;flex-direction: column;width: 410rpx;height: 45px;}
+	.tupleView .cell .content .textContent .text{display: flex;align-items: center;width: 410rpx;height: 15px;font-size: 12px;}
+	.tupleView .cell .content .rightImage{width: 45px;height: 45px;margin-left: 10px;background-color: red;}
+	.tupleView .cell .content .arrow{width: 10px;height: 45px;margin-left: 10px;background-color: yellow;}
+	.tupleView .cell .separator{width: 670rpx;height: 1px;margin: 0px 10px;background-color: #e9e9e9;}
+	//第二种样式写法
+	// .tupleView {
+	// 	display: flex;
+	// 	align-items: center;
+	// 	flex-direction: column;
+	// 	justify-content: center;
+	// 	background-color: red;
 		
-		.cell {
-			display: flex;
-			flex-direction: column;
-			width: 355px;
-			height: 66px;
-			margin: 0 10px;
-			background-color: gray;
-			.content {
-				display: flex;
-				flex-direction: row;
-				width: 335px;
-				height: 65px;
-				margin: 10px 10px;
-				.leftImage {
-					width: 45px;
-					height: 45px;
-					margin-right: 10px;
-					background-color: red;
-				}
-				.textContent {						
-					display: flex;
-					flex-direction: column;
-					width: 205px;
-					height: 45px;
-					.text {
-						display: flex;
-						align-items: center;
-						width: 205px;
-						height: 15px;
-						font-size: 12px;
-					}
-				}
-				.rightImage {
-					width: 45px;
-					height: 45px;
-					margin-left: 10px;
-					background-color: red;
-				}
-				.arrow {						
-					width: 10px;
-					height: 45px;
-					margin-left: 10px;
-					background-color: yellow;
-				}
-			}
-			.separator {						
-				width: 335px;
-				height: 1px;
-				margin: 0px 10px;
-				background-color: #e9e9e9;
-			}
-		}
-	}
-	
-	.main{margin:30rpx;background-color: #FF6700;border-radius: 10rpx;border:1px solid #FF6700;}
-	.main .subject{height: 80rpx;font-size: 36rpx;text-align: center;line-height: 80rpx;color: #fff;}
-	.main .body{padding: 20rpx;background-color: #FFFFFF;height: 150px;}
-	.main .body .line{height: 60rpx;line-height: 60rpx;color: #007AFF;}
+	// 	.cell {
+	// 		display: flex;
+	// 		flex-direction: column;
+	// 		width: 710rpx;
+	// 		height: 66px;
+	// 		margin: 0 10px;
+	// 		background-color: gray;
+	// 		.content {
+	// 			display: flex;
+	// 			flex-direction: row;
+	// 			width: 670rpx;
+	// 			height: 65px;
+	// 			margin: 10px 10px;
+	// 			.leftImage {
+	// 				width: 45px;
+	// 				height: 45px;
+	// 				margin-right: 10px;
+	// 				background-color: red;
+	// 			}
+	// 			.textContent {						
+	// 				display: flex;
+	// 				flex-direction: column;
+	// 				width: 410rpx;
+	// 				height: 45px;
+	// 				.text {
+	// 					display: flex;
+	// 					align-items: center;
+	// 					width: 410rpx;
+	// 					height: 15px;
+	// 					font-size: 12px;
+	// 				}
+	// 			}
+	// 			.rightImage {
+	// 				width: 45px;
+	// 				height: 45px;
+	// 				margin-left: 10px;
+	// 				background-color: red;
+	// 			}
+	// 			.arrow {						
+	// 				width: 10px;
+	// 				height: 45px;
+	// 				margin-left: 10px;
+	// 				background-color: yellow;
+	// 			}
+	// 		}
+	// 		.separator {						
+	// 			width: 670rpx;
+	// 			height: 1px;
+	// 			margin: 0px 10px;
+	// 			background-color: #e9e9e9;
+	// 		}
+	// 	}
+	// }
 </style>
