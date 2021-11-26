@@ -2,17 +2,9 @@ import CryptoJS from './crypto-js.js';
 // 加密key
 const AesKey = 'c5zKcW45KYGvrlCVEVvGysnjyCh3sg4r';
 
-
-// #ifdef APP-PLUS
-// // 公共接口请求地址
- const rootPath = "http://43.129.186.219:8010";
-// const rootPath = process.env.NODE_ENV === 'development' ? "http://43.129.186.219:8010" : "";
-// #endif
-
-// #ifdef H5
- const rootPath = "http://43.129.186.219:8010";
-// const rootPath = process.env.NODE_ENV === 'development' ? "http://43.129.186.219:8010" : "https://baidu.com";
-// #endif
+// const hostUrlMode = 'production';//生产环境
+// const hostUrlMode = 'quasiProduction';//准生产环境
+const hostUrlMode = 'development';//开发环境
 
 // api 地址
 const api = {
@@ -21,6 +13,54 @@ const api = {
 
 // 工具
 const util = {
+	getServerMode() {
+		switch (hostUrlMode) {
+		  case 'production':
+		    return 0;
+		    break;
+		  case 'quasiProduction':
+		    return 1;
+		    break;
+		  case 'development':
+		    return 2;
+		    break;
+		  default:
+		    break;
+		}
+	},
+	getServerUrl() {
+		// #ifdef APP-PLUS
+		switch (hostUrlMode) {
+		  case 'production':
+		    return process.env.NODE_ENV === 'development' ? "http://43.129.186.219:8010" : "";
+		    break;
+		  case 'quasiProduction':
+		    return "http://43.129.186.219:8010";
+		    break;			
+		  case 'development':
+		    return "http://43.129.186.219:8010";
+		    break;
+		  default:
+		    break;
+		}
+		// #endif
+		
+		// #ifdef H5
+		switch (hostUrlMode) {
+		  case 'production':
+		    return process.env.NODE_ENV === 'development' ? "http://43.129.186.219:8010" : "";
+		    break;
+		  case 'quasiProduction':
+		    return "http://43.129.186.219:8010";
+		    break;			
+		  case 'development':
+		    return "http://43.129.186.219:8010";
+		    break;
+		  default:
+		    break;
+		}
+		// #endif
+	},
 	// 获取app信息
 	getAppInfo() {
 		if (uni.getStorageSync('wgtInfo')) {
@@ -815,6 +855,8 @@ const number = {
 		return stringValue;
 	}
 }	
+
+const rootPath = util.getServerUrl();
 
 export default {
 	rootPath,
