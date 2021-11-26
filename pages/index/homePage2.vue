@@ -1,6 +1,7 @@
 <template>
 	<view class="tupleView">
-		<HTupleHoriCell :cellHeight="120" :cellWidth="winWidth"></HTupleHoriCell>
+		<!-- <HTupleHoriCell :cellHeight="120" :cellWidth="winWidth"></HTupleHoriCell> -->
+		<HTupleHoriCell :cellHeight="120"></HTupleHoriCell>
 		<HTupleHoriCell :rightImageHidden="true" :arrowHidden="true"></HTupleHoriCell>
 		<!-- 第一个item -->
 		<view class="cell">
