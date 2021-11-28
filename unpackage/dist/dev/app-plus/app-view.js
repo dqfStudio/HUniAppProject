@@ -229,48 +229,46 @@ var render = function() {
     "v-uni-view",
     { staticClass: _vm._$g(0, "sc"), attrs: { _i: 0 } },
     [
-      _c("HTupleHoriCell", { attrs: { _i: 1 } }),
-      _c("HTupleHoriCell", { attrs: { _i: 2 } }),
       _c(
         "v-uni-view",
-        { staticClass: _vm._$g(3, "sc"), attrs: { _i: 3 } },
+        { staticClass: _vm._$g(1, "sc"), attrs: { _i: 1 } },
         [
           _c(
             "v-uni-view",
-            { staticClass: _vm._$g(4, "sc"), attrs: { _i: 4 } },
+            { staticClass: _vm._$g(2, "sc"), attrs: { _i: 2 } },
             [
               _c("v-uni-view", {
-                staticClass: _vm._$g(5, "sc"),
-                attrs: { _i: 5 }
+                staticClass: _vm._$g(3, "sc"),
+                attrs: { _i: 3 }
               }),
               _c(
                 "v-uni-view",
-                { staticClass: _vm._$g(6, "sc"), attrs: { _i: 6 } },
+                { staticClass: _vm._$g(4, "sc"), attrs: { _i: 4 } },
                 [
                   _c(
                     "v-uni-text",
                     {
-                      staticClass: _vm._$g(7, "sc"),
+                      staticClass: _vm._$g(5, "sc"),
                       staticStyle: { "background-color": "red" },
-                      attrs: { _i: 7 }
+                      attrs: { _i: 5 }
                     },
                     [_vm._v("label")]
                   ),
                   _c(
                     "v-uni-text",
                     {
-                      staticClass: _vm._$g(8, "sc"),
+                      staticClass: _vm._$g(6, "sc"),
                       staticStyle: { "background-color": "yellow" },
-                      attrs: { _i: 8 }
+                      attrs: { _i: 6 }
                     },
                     [_vm._v("detailLabel")]
                   ),
                   _c(
                     "v-uni-text",
                     {
-                      staticClass: _vm._$g(9, "sc"),
+                      staticClass: _vm._$g(7, "sc"),
                       staticStyle: { "background-color": "green" },
-                      attrs: { _i: 9 }
+                      attrs: { _i: 7 }
                     },
                     [_vm._v("accessoryLabel")]
                   )
@@ -278,19 +276,19 @@ var render = function() {
                 1
               ),
               _c("v-uni-view", {
-                staticClass: _vm._$g(10, "sc"),
-                attrs: { _i: 10 }
+                staticClass: _vm._$g(8, "sc"),
+                attrs: { _i: 8 }
               }),
               _c("v-uni-view", {
-                staticClass: _vm._$g(11, "sc"),
-                attrs: { _i: 11 }
+                staticClass: _vm._$g(9, "sc"),
+                attrs: { _i: 9 }
               })
             ],
             1
           ),
           _c("v-uni-view", {
-            staticClass: _vm._$g(12, "sc"),
-            attrs: { _i: 12 }
+            staticClass: _vm._$g(10, "sc"),
+            attrs: { _i: 10 }
           })
         ],
         1
@@ -306,7 +304,7 @@ var render = function() {
             margin: "0 10px",
             "background-color": "gray"
           },
-          attrs: { _i: 13 }
+          attrs: { _i: 11 }
         },
         [
           _c(
@@ -319,7 +317,7 @@ var render = function() {
                 height: "65px",
                 margin: "10px 10px"
               },
-              attrs: { _i: 14 }
+              attrs: { _i: 12 }
             },
             [
               _c("v-uni-view", {
@@ -328,7 +326,7 @@ var render = function() {
                   height: "45px",
                   "background-color": "red"
                 },
-                attrs: { _i: 15 }
+                attrs: { _i: 13 }
               }),
               _c(
                 "v-uni-view",
@@ -340,7 +338,7 @@ var render = function() {
                     height: "45px",
                     "margin-left": "10px"
                   },
-                  attrs: { _i: 16 }
+                  attrs: { _i: 14 }
                 },
                 [
                   _c("v-uni-text", {
@@ -350,7 +348,7 @@ var render = function() {
                       "background-color": "red",
                       "font-size": "12px"
                     },
-                    attrs: { _i: 17 }
+                    attrs: { _i: 15 }
                   }),
                   _c("v-uni-text", {
                     staticStyle: {
@@ -359,7 +357,7 @@ var render = function() {
                       "background-color": "yellow",
                       "font-size": "12px"
                     },
-                    attrs: { _i: 18 }
+                    attrs: { _i: 16 }
                   })
                 ],
                 1
@@ -374,7 +372,7 @@ var render = function() {
               margin: "0px 10px",
               "background-color": "#e9e9e9"
             },
-            attrs: { _i: 19 }
+            attrs: { _i: 17 }
           })
         ],
         1
@@ -390,7 +388,7 @@ var render = function() {
             margin: "0 10px",
             "background-color": "gray"
           },
-          attrs: { _i: 20 }
+          attrs: { _i: 18 }
         },
         [
           _c(
@@ -403,7 +401,7 @@ var render = function() {
                 height: "65px",
                 margin: "10px 10px"
               },
-              attrs: { _i: 21 }
+              attrs: { _i: 19 }
             },
             [
               _c("v-uni-view", {
@@ -412,7 +410,7 @@ var render = function() {
                   height: "45px",
                   "background-color": "red"
                 },
-                attrs: { _i: 22 }
+                attrs: { _i: 20 }
               }),
               _c(
                 "v-uni-view",
@@ -424,7 +422,7 @@ var render = function() {
                     height: "45px",
                     margin: "0 10px"
                   },
-                  attrs: { _i: 23 }
+                  attrs: { _i: 21 }
                 },
                 [
                   _c("v-uni-text", {
@@ -434,7 +432,7 @@ var render = function() {
                       "background-color": "red",
                       "font-size": "12px"
                     },
-                    attrs: { _i: 24 }
+                    attrs: { _i: 22 }
                   }),
                   _c("v-uni-text", {
                     staticStyle: {
@@ -443,7 +441,7 @@ var render = function() {
                       "background-color": "yellow",
                       "font-size": "12px"
                     },
-                    attrs: { _i: 25 }
+                    attrs: { _i: 23 }
                   })
                 ],
                 1
@@ -454,7 +452,7 @@ var render = function() {
                   height: "45px",
                   "background-color": "red"
                 },
-                attrs: { _i: 26 }
+                attrs: { _i: 24 }
               })
             ],
             1
@@ -466,7 +464,7 @@ var render = function() {
               margin: "0px 10px",
               "background-color": "#e9e9e9"
             },
-            attrs: { _i: 27 }
+            attrs: { _i: 25 }
           })
         ],
         1
@@ -482,7 +480,7 @@ var render = function() {
             margin: "0 10px",
             "background-color": "gray"
           },
-          attrs: { _i: 28 }
+          attrs: { _i: 26 }
         },
         [
           _c(
@@ -495,7 +493,7 @@ var render = function() {
                 height: "100px",
                 margin: "10px 10px"
               },
-              attrs: { _i: 29 }
+              attrs: { _i: 27 }
             },
             [
               _c(
@@ -507,7 +505,7 @@ var render = function() {
                     width: "112px",
                     height: "100px"
                   },
-                  attrs: { _i: 30 }
+                  attrs: { _i: 28 }
                 },
                 [
                   _c("v-uni-view", {
@@ -518,7 +516,7 @@ var render = function() {
                       "background-color": "red",
                       "border-radius": "100%"
                     },
-                    attrs: { _i: 31 }
+                    attrs: { _i: 29 }
                   }),
                   _c(
                     "v-uni-text",
@@ -530,7 +528,7 @@ var render = function() {
                         "font-size": "14px",
                         "text-align": "center"
                       },
-                      attrs: { _i: 32 }
+                      attrs: { _i: 30 }
                     },
                     [_vm._v("黑客帝国")]
                   )
@@ -546,7 +544,7 @@ var render = function() {
                     width: "112px",
                     height: "100px"
                   },
-                  attrs: { _i: 33 }
+                  attrs: { _i: 31 }
                 },
                 [
                   _c("v-uni-view", {
@@ -557,7 +555,7 @@ var render = function() {
                       "background-color": "red",
                       "border-radius": "100%"
                     },
-                    attrs: { _i: 34 }
+                    attrs: { _i: 32 }
                   }),
                   _c(
                     "v-uni-text",
@@ -569,7 +567,7 @@ var render = function() {
                         "font-size": "14px",
                         "text-align": "center"
                       },
-                      attrs: { _i: 35 }
+                      attrs: { _i: 33 }
                     },
                     [_vm._v("黑客帝国")]
                   )
@@ -585,7 +583,7 @@ var render = function() {
                     width: "111px",
                     height: "100px"
                   },
-                  attrs: { _i: 36 },
+                  attrs: { _i: 34 },
                   on: {
                     click: function($event) {
                       return _vm.$handleViewEvent($event)
@@ -601,7 +599,7 @@ var render = function() {
                       "background-color": "red",
                       "border-radius": "100%"
                     },
-                    attrs: { _i: 37 }
+                    attrs: { _i: 35 }
                   }),
                   _c(
                     "v-uni-text",
@@ -613,7 +611,7 @@ var render = function() {
                         "font-size": "14px",
                         "text-align": "center"
                       },
-                      attrs: { _i: 38 }
+                      attrs: { _i: 36 }
                     },
                     [_vm._v("黑客帝国")]
                   )
@@ -630,7 +628,7 @@ var render = function() {
               margin: "0px 10px",
               "background-color": "#e9e9e9"
             },
-            attrs: { _i: 39 }
+            attrs: { _i: 37 }
           })
         ],
         1
@@ -646,7 +644,7 @@ var render = function() {
             margin: "0 10px",
             "background-color": "gray"
           },
-          attrs: { _i: 40 }
+          attrs: { _i: 38 }
         },
         [
           _c(
@@ -659,7 +657,7 @@ var render = function() {
                 height: "65px",
                 margin: "10px 10px"
               },
-              attrs: { _i: 41 }
+              attrs: { _i: 39 }
             },
             [
               _c(
@@ -674,7 +672,7 @@ var render = function() {
                     "background-color": "yellow",
                     "font-size": "12px"
                   },
-                  attrs: { _i: 42 }
+                  attrs: { _i: 40 }
                 },
                 [_vm._v("accessoryLabel")]
               ),
@@ -690,7 +688,7 @@ var render = function() {
                     "background-color": "green",
                     "font-size": "12px"
                   },
-                  attrs: { _i: 43 }
+                  attrs: { _i: 41 }
                 },
                 [_vm._v("label")]
               ),
@@ -706,7 +704,7 @@ var render = function() {
                     "background-color": "red",
                     "font-size": "12px"
                   },
-                  attrs: { _i: 44 }
+                  attrs: { _i: 42 }
                 },
                 [_vm._v("detailLabel")]
               )
@@ -720,7 +718,7 @@ var render = function() {
               margin: "0px 10px",
               "background-color": "#e9e9e9"
             },
-            attrs: { _i: 45 }
+            attrs: { _i: 43 }
           })
         ],
         1
@@ -736,7 +734,7 @@ var render = function() {
             margin: "0 10px",
             "background-color": "gray"
           },
-          attrs: { _i: 46 }
+          attrs: { _i: 44 }
         },
         [
           _c(
@@ -749,7 +747,7 @@ var render = function() {
                 height: "65px",
                 margin: "10px 10px"
               },
-              attrs: { _i: 47 }
+              attrs: { _i: 45 }
             },
             [
               _c(
@@ -764,7 +762,7 @@ var render = function() {
                     "background-color": "green",
                     "font-size": "12px"
                   },
-                  attrs: { _i: 48 }
+                  attrs: { _i: 46 }
                 },
                 [_vm._v("验证码")]
               ),
@@ -782,7 +780,7 @@ var render = function() {
                   type: "text",
                   placeholder: "请输入验证码",
                   "placeholder-style": "color: white",
-                  _i: 49
+                  _i: 47
                 }
               }),
               _c(
@@ -797,7 +795,7 @@ var render = function() {
                     "background-color": "green",
                     "font-size": "12px"
                   },
-                  attrs: { _i: 50 }
+                  attrs: { _i: 48 }
                 },
                 [_vm._v("获取验证码")]
               )
