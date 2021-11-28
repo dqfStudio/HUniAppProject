@@ -21,7 +21,7 @@
 		</view>
 		
 		<!-- 第二个cell -->
-		<view v-if="index == 1" class="cell1" :style="{width: cell.width+'px', height: cell.height+'px'}">
+		<view v-if="index == 1" class="cell1" :style="{width: cell.width+'px', height: cell.height+1+'px'}">
 			<!-- accessory -->
 			<text class="text" :style="{width: cell.width+'px', height: cell.accessoryHeight+'px'}">accessoryLabel</text>
 			<!-- image -->
@@ -45,6 +45,8 @@
 			<text class="text" :style="{width: cell.width+'px', height: cell.labelHeight+'px'}">label</text>
 			<!-- detail -->
 			<text class="text" :style="{width: cell.width+'px', height: cell.detailHeight+'px'}">detailLabel</text>
+			<!-- 间隔线 -->
+			<view class="separator" :style="{width: cell.width+'px'}"></view>
 		</view>
 		
 	</view>
@@ -165,6 +167,10 @@
 				align-items: center;
 				font-size: 12px;
 				position: absolute;
+			}
+			.separator {
+				height: 1px;
+				background-color: #e9e9e9;
 			}
 		}
 	}
