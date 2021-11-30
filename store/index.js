@@ -67,6 +67,7 @@ const store = new Vuex.Store({
 			})
 		},
 		// 获取直播配置
+		//this.$store.dispatch('getHomeGetConfig');外部这样调用
 		async getHomeGetConfig ({commit, state}) {
 			function requestImageUrl(imgData = {}, key = 'image') {
 				if (imgData && imgData[key] && imgData[key].indexOf('.html') >= 0) {
