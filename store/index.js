@@ -6,11 +6,17 @@ import config from '@/utils/config.js'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-	state: {
+	state: {//对数据的全局存储
+		isLogin: false,
 		userInfo: uni.getStorageSync('userInfo') || {}, // 用户信息
 		HomeGetConfig: [], // 直播用户信息
 	},
-	mutations: {
+	mutations: {//对数据的同步更改
+		//外部这样提交
+		//this.$store.commit('setIsLogin', value); 
+		setIsLogin(state, isLogin) {
+			state.isLogin = isLogin;
+		},
 		setUserInfo(state, userInfo) {
 			state.userInfo = userInfo;
 		},
@@ -26,10 +32,12 @@ const store = new Vuex.Store({
 			state.HomeGetConfig = data;
 		},
 	},
-	getters: {
-		
+	getters: {//可以理解为computed ，对数据进行计算
+		getIsLogin: state => state.isLogin,
+		//外部这样调用，一般不写getter方法，而是直接this.$store.isLogin调用
+		// this.$store.getters.getIsLogin
 	},
-	actions: {
+	actions: {//对数据的异步更改
 		getUserInfo: async function({commit, state}) {
 			return await new Promise((resolve, reject) => {
 				http.post({
