@@ -15,6 +15,7 @@
 				<view class="rightImage" :style="{width: cell.contentHeight+'px', height: cell.contentHeight+'px'}"></view>
 				<!-- 右边箭头 -->
 				<view class="arrow" :style="{height: cell.contentHeight+'px'}"></view>
+				<!-- <uni-icons type="arrowright" size="18" color="#ccc"></uni-icons> -->
 			</view>
 			<!-- 间隔线 -->
 			<view class="separator" :style="{width: cell.contentWidth+'px'}"></view>
