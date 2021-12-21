@@ -1,99 +1,102 @@
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
+	<!-- <HPager backgroundColor="red"> -->
+		<view class="content">
+			<image class="logo" src="/static/logo.png"></image>
+			<view class="text-area">
+				<text class="title">{{title}}</text>
+			</view>
 		</view>
-	</view>
+	<!-- </HPager> -->
 </template>
 
 <script>
+	import HPager from '@/pages/index/HPager.vue'
 	export default {
+		components: {
+			HPager
+		},
 		data() {
 			return {
-				title: 'Hello',
+				title: 'Hello'
 			}
 		},
 		onLoad() {
-			// let string = this.formatter(123456.780, {
-			// 	afterPoint: 3,
-			// 	pointZero: true,
-			// 	grouping: true,
-			// 	// conversion: true,
-				
-			// })
 			
+			// 页面data中的数据已经改变，但是页面没有重新渲染
+			// 当页面数据改变时，使用this.$forceUpdate();
+			// 迫使 Vue 实例重新渲染。注意它仅仅影响实例本身和插入插槽内容的子组件，而不是所有子组件。
+
 			let string = this.formatter('+￥123,456.789M', {
 				afterPoint: 0,
 				pointZero: true,
 				grouping: true,
 				// conversion: true,
-				
+
 			})
-			
+
 			// let string = this.formatter(123456.789)
-			
+
 			// let string = this.unFormatter('+￥123,456.789M')
-			
+
 			console.log(string)
 		},
 		methods: {
-			formatter(value, obj){
+			formatter(value, obj) {
 				if (!obj) {
 					obj = {}
 				}
 				var numberValue = Number(this.unFormatter(value))
 				var stringValue = ''
-			
+
 				let afterPoint = 2;
 				if (obj.afterPoint >= 0) {
 					afterPoint = obj.afterPoint;
 				}
 				let pointZero = obj.pointZero || true;
-				
+
 				numberValue = numberValue.toFixed(afterPoint)
 				if (!pointZero) {
-					numberValue = Number(numberValue) 
+					numberValue = Number(numberValue)
 				}
-				
+
 				stringValue = String(numberValue);
-				
+
 				if (obj.conversion) {
-					
+
 					let tmpString = String(numberValue);
 					const stringArray = tmpString.split('.');
 					tmpString = stringArray[0]
 					let length = tmpString.length
-					
+
 					//金额简写恢复
 					var appendString = "";
 					var dividendString = "1";
-					
+
 					//当达到千、百万、亿、兆时，使用省略写法（K、M、B、T）
 					if (length >= 13) {
 						appendString = "T";
 						dividendString = "1000000000000";
-					}else if (length >= 9) {
+					} else if (length >= 9) {
 						appendString = "B";
 						dividendString = "100000000";
-					}else if (length >= 7) {
+					} else if (length >= 7) {
 						appendString = "M";
 						dividendString = "1000000";
-					}else if (length >= 4) {
+					} else if (length >= 4) {
 						appendString = "K";
 						dividendString = "1000";
 					}
-					stringValue = String(parseInt(numberValue/Number(dividendString))).concat(appendString);
-				}else if (obj.grouping) {
-					
+					stringValue = String(parseInt(numberValue / Number(dividendString))).concat(appendString);
+				} else if (obj.grouping) {
+
 					let tmpString = String(numberValue);
 					const stringArray = tmpString.split('.');
 					let tmpStr1 = stringArray[0]
 					let tmpStr2 = stringArray[1]
-					
+
 					let tmpStr = []
 					let j = 0
-					for (let i=tmpStr1.length-1; i>=0; i--) {
+					for (let i = tmpStr1.length - 1; i >= 0; i--) {
 						let string = tmpStr1[i]
 						if (j == 3) {
 							j = 0;
@@ -102,52 +105,52 @@
 						j++
 						tmpStr.push(string)
 					}
-					
+
 					tmpStr = tmpStr.reverse()
 					if (tmpStr2 && tmpStr2.length > 0) {
 						tmpStr.push('.')
 						tmpStr.push(tmpStr2)
 					}
 					stringValue = tmpStr.join('')
-					
+
 				}
-				
+
 				let symbol = obj.symbol || '';
 				stringValue = symbol.concat(stringValue);
-				
+
 				let prefix = obj.prefix || '';
 				stringValue = prefix.concat(stringValue);
-				
+
 				return stringValue;
 			},
-			unFormatter(value){
-				
+			unFormatter(value) {
+
 				var stringValue = String(value)
 				stringValue = stringValue.replace(/[,]/g, '')
 				stringValue = stringValue.replace(/[+-]/g, '')
 				stringValue = stringValue.replace(/[R$￥₫₹]/g, '')
-			
+
 				var appendString = "";
 				var multiplyingString = "1";
-				
+
 				//当达到千、百万、亿、兆时，使用省略写法（K、M、B、T）
 				if (stringValue.search("T") != -1) {
 					appendString = "T";
 					multiplyingString = "1000000000000";
-				}else if (stringValue.search("B") != -1) {
+				} else if (stringValue.search("B") != -1) {
 					appendString = "B";
 					multiplyingString = "100000000";
-				}else if (stringValue.search("M") != -1) {
+				} else if (stringValue.search("M") != -1) {
 					appendString = "M";
 					multiplyingString = "1000000";
-				}else if (stringValue.search("K") != -1) {
+				} else if (stringValue.search("K") != -1) {
 					appendString = "K";
 					multiplyingString = "1000";
 				}
-				
+
 				stringValue = stringValue.replace(appendString, '')
-				stringValue = String(Number(stringValue)*Number(multiplyingString))
-			
+				stringValue = String(Number(stringValue) * Number(multiplyingString))
+
 				return stringValue;
 			}
 		}
