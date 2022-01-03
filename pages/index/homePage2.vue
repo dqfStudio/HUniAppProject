@@ -1,5 +1,5 @@
 <template>
-	<view class="tupleView">
+	<view class="page">
 		<!-- <HTupleHoriCell :cellHeight="120" :cellWidth="winWidth"></HTupleHoriCell> -->
 		<!-- <HTupleHoriCell :cellHeight="120"></HTupleHoriCell>
 		<HTupleHoriCell :rightImageHidden="true" :arrowHidden="true"></HTupleHoriCell> -->
@@ -152,17 +152,17 @@
 
 <style lang="scss">
 	//第一种样式写法
-	// .tupleView{display: flex;align-items: center;flex-direction: column;justify-content: center;background-color: red;}
-	// .tupleView .cell{display: flex;flex-direction: column;width: 710rpx;height: 66px;margin: 0 10px;background-color: gray;}
-	// .tupleView .cell .content{display: flex;flex-direction: row;width: 670rpx;height: 65px;margin: 10px 10px;}
-	// .tupleView .cell .content .leftImage{width: 45px;height: 45px;margin-right: 10px;background-color: red;}
-	// .tupleView .cell .content .textContent{display: flex;flex-direction: column;width: 410rpx;height: 45px;}
-	// .tupleView .cell .content .textContent .text{display: flex;align-items: center;width: 410rpx;height: 15px;font-size: 12px;}
-	// .tupleView .cell .content .rightImage{width: 45px;height: 45px;margin-left: 10px;background-color: red;}
-	// .tupleView .cell .content .arrow{width: 10px;height: 45px;margin-left: 10px;background-color: yellow;}
-	// .tupleView .cell .separator{width: 670rpx;height: 1px;margin: 0px 10px;background-color: #e9e9e9;}
+	// .page{display: flex;align-items: center;flex-direction: column;justify-content: center;background-color: red;}
+	// .page .cell{display: flex;flex-direction: column;width: 710rpx;height: 66px;margin: 0 10px;background-color: gray;}
+	// .page .cell .content{display: flex;flex-direction: row;width: 670rpx;height: 65px;margin: 10px 10px;}
+	// .page .cell .content .leftImage{width: 45px;height: 45px;margin-right: 10px;background-color: red;}
+	// .page .cell .content .textContent{display: flex;flex-direction: column;width: 410rpx;height: 45px;}
+	// .page .cell .content .textContent .text{display: flex;align-items: center;width: 410rpx;height: 15px;font-size: 12px;}
+	// .page .cell .content .rightImage{width: 45px;height: 45px;margin-left: 10px;background-color: red;}
+	// .page .cell .content .arrow{width: 10px;height: 45px;margin-left: 10px;background-color: yellow;}
+	// .page .cell .separator{width: 670rpx;height: 1px;margin: 0px 10px;background-color: #e9e9e9;}
 	//第二种样式写法
-	.tupleView {
+	.page {
 		display: flex;
 		align-items: center;
 		flex-direction: column;
