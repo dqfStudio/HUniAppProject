@@ -162,6 +162,11 @@
 	// .page .cell .content .arrow{width: 10px;height: 45px;margin-left: 10px;background-color: yellow;}
 	// .page .cell .separator{width: 670rpx;height: 1px;margin: 0px 10px;background-color: #e9e9e9;}
 	//第二种样式写法
+	page {
+		// style中添加scoped，会导致设置背景颜色无效
+		// nvue中设置page样式也无效
+		background-color: #007AFF;
+	}
 	.page {
 		display: flex;
 		align-items: center;
